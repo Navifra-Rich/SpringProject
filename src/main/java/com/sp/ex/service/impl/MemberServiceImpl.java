@@ -18,8 +18,8 @@ public class MemberServiceImpl implements MemberService{
 
 	@Autowired
 	private MemberMapper mapper;
-	//@Autowired
-	private MemberDAO memberDAO = new MemberDAO();
+	@Autowired
+	private MemberDAO memberDAO;
 	@Override
 	public List<MemberDTO> viewAll() {
 		// TODO Auto-generated method stub
@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService{
 		param.put("pw",pw);
 		MemberDTO para = new MemberDTO(id,name,pw);
 		//mapper.insertMember(para);
-		//memberDAO.memberInsert(para);
+		memberDAO.memberInsert(para);
 		return;
 	}
 

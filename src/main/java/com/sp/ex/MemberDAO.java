@@ -11,19 +11,13 @@ import org.springframework.stereotype.Repository;
 import com.sp.ex.dto.MemberDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 
-@Repository
+@Component
 public class MemberDAO {
+	
 	@Autowired
 	private SqlSession session;
-	
-	@Autowired
-	List<MemberDTO> list;
 
-
-
-	
 	public void memberInsert(MemberDTO member) {
-
 		 session.insert("com.sp.ex.mapper.MemberMapper.insertMember",member);
 
 	}
