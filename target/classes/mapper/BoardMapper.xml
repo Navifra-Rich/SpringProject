@@ -1,0 +1,22 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sp.ex.mapper.BoardMapper">
+
+	<insert id="createPost" parameterType="com.sp.ex.dto.postDTO">
+		<selectKey keyProperty="num" resultType="int" order="BEFORE">
+			select
+			board_seq.nextval from dual
+		</selectKey>
+		Insert into board values(#{num},#{title},#{author},#{content},#{time})
+	</insert>
+	
+	<select id="viewAll" resultType="com.sp.ex.dto.postDTO">
+		Select * from board
+	</select>
+	
+	<select id="showPost" resultType="com.sp.ex.dto.postDTO" parameterType="int">
+		select * from board where id= #{idx}
+	</select>
+</mapper>

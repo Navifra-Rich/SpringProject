@@ -1,11 +1,26 @@
 package com.sp.ex;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sp.ex.service.BoardService;
 import com.sp.ex.service.MemberService;
 
 @Controller
@@ -15,11 +30,69 @@ public class MainController {
 	@Autowired
 	private MemberService memberService;
 	
-
-	@RequestMapping("test")
-	public String test(Model model) {
-		model.addAttribute("viewAll",memberService.viewAll());
+	@Autowired
+	private BoardService boardService;
+	
+	
+	@RequestMapping(value ="/rrr")
+	public String redirect(@RequestParam("code")String code) {
+		
 		return "member/test";
+	}
+	@RequestMapping(value ="/test")
+	public String test22() throws Exception {
+		String urlStr="https://kauth.kakao.com/oauth/authorize?client_id=f7c30b063e2ae91c50963c86dae0f309&redirect_uri=http://localhost:805/ex/Main/kakaologin&response_type=code&scope=friends";
+		
+		URL url = new URL(urlStr);
+		
+		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+		con.setRequestMethod("GET");
+		int resCode=con.getResponseCode();
+		System.out.println("response code = "+resCode);
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String line="";
+		while((line=br.readLine())!=null) {
+			System.out.println(line);
+		}
+		
+		
+		return "redirect:"+urlStr;
+	}
+	@RequestMapping(value = "/kakaologin", method=RequestMethod.GET)
+	public String rere(@RequestParam("code")String code) throws Exception {
+		URL url = new URL("https://kauth.kakao.com/oauth/token");
+		HttpsURLConnection con = (HttpsURLConnection)url.openConnection();
+		con.setRequestMethod("POST");
+		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		con.setDoOutput(true);	
+		con.setDoInput(true);
+		String param="grant_type=authorization_code"+
+						"&client_id=f7c30b063e2ae91c50963c86dae0f309"+
+						"&redirect_uri=http://localhost:805/ex/Main/kakaologin"+
+						"&code="+code;
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(param);
+        wr.flush();
+        wr.close();
+
+		int resCode=con.getResponseCode();
+		System.out.println("response code = "+resCode);
+		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String line="";
+		while((line=br.readLine())!=null) {
+			System.out.println(line);
+		}
+		
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		
+		return "member/test";
+	}
+	@RequestMapping("/getCode")
+	public String test() {
+		String uri="https://kauth.kakao.com/oauth/authorize?client_id=f7c30b063e2ae91c50963c86dae0f309&redirect_uri=http://localhost:805/ex/Main/kakaologin&response_type=code";
+		System.out.println("in test");
+		return "redirect:"+uri;
 	}
 	
 	@RequestMapping("insertMember")
@@ -29,8 +102,30 @@ public class MainController {
 		return "member/test";
 	}
 	
-	@RequestMapping("home")
+	@RequestMapping("/home")
 	public String main() {
 		return "home";
+	}
+	
+	@RequestMapping("/logIn")
+	public String logIn(@RequestParam("id")String id, @RequestParam("pw")String pw,Model model) {
+		System.out.println("logIn in MainController");
+		boolean isExist = memberService.logIn(id, pw);
+		if(isExist) {
+			System.out.println("logIn!");
+			model.addAttribute("viewAll",boardService.viewAll());
+			
+			return "board/boardWrite";
+		}else {
+			return "redirect:/";
+		}	
+	}
+	
+	@RequestMapping("signUp")
+	public String signUp(@RequestParam("id")String id, @RequestParam("name")String name, @RequestParam("pw")String pw,Model model) {
+		System.out.println("sign up! in controller");
+		
+		model.addAttribute("dtos",memberService.signUp(id,name,pw));
+		return "member/signUp";
 	}
 }

@@ -18,8 +18,8 @@ public class MemberDAO {
 	private SqlSession session;
 
 	public void memberInsert(MemberDTO member) {
+		System.out.println("in dao  "+member.getId());
 		 session.insert("com.sp.ex.mapper.MemberMapper.insertMember",member);
-
 	}
 	
 }

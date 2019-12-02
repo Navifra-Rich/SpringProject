@@ -10,6 +10,10 @@
 	</select>
 	
 	<insert id="insertMember" parameterType="com.sp.ex.dto.MemberDTO">
-	Insert into userlist(name, id,password) values(#{id}, #{name}, #{password})
+	Insert into userlist(id, name,password) values(#{id}, #{name}, #{password})
 	</insert>
+	
+	<select id = "checkID" resultType="com.sp.ex.dto.MemberDTO">
+	Select * from userlist where id=#{id}
+	</select>
 </mapper>

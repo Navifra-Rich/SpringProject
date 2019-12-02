@@ -8,4 +8,5 @@ import com.sp.ex.dto.MemberDTO;
 public interface MemberMapper {
 	public List<MemberDTO> viewAll();
 	public void insertMember(MemberDTO dto);
+	public MemberDTO checkID(String id);
 }

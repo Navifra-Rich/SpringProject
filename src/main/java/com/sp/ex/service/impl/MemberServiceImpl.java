@@ -22,7 +22,6 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDAO memberDAO;
 	@Override
 	public List<MemberDTO> viewAll() {
-		// TODO Auto-generated method stub
 		return mapper.viewAll();
 	}
 	@Override
@@ -34,9 +33,31 @@ public class MemberServiceImpl implements MemberService{
 		param.put("name",name);
 		param.put("pw",pw);
 		MemberDTO para = new MemberDTO(id,name,pw);
-		//mapper.insertMember(para);
 		memberDAO.memberInsert(para);
 		return;
+	}
+	@Override
+	public MemberDTO signUp(String id,String name, String pw) {
+		MemberDTO dto = mapper.checkID(id);
+		if(dto!=null) {
+			System.out.println("이미 존재함 ㅂㅂ");
+		} else if(dto==null) {
+			System.out.println("회원 생성");
+			memberDAO.memberInsert(new MemberDTO(id,name,pw));
+		}
+		return dto;
+	}
+	@Override
+	public boolean logIn(String id, String pw) {
+		MemberDTO dto = mapper.checkID(id);
+		if(dto==null||!dto.getPassword().equals(pw)) {
+			System.out.println("비번틀리거나 없는 계정");
+			return false;
+		}else {
+			System.out.println("얍");
+			return true;
+		}
+			
 	}
 
 }
