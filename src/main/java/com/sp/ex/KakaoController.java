@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/Kakao")
 public class KakaoController {
 	
+	
+	@RequestMapping("/refreshToken")
+	public String refreshToken() {
+		return "";
+	}
+	
 	@RequestMapping("/self")
 	public String self(@RequestParam("span_title")String title,@RequestParam("span_author")String author,@RequestParam("span_content")String content) throws Exception {
 		String urlStr = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
@@ -78,6 +84,7 @@ public class KakaoController {
 			System.out.println(line);
 		}
 		System.out.println("asdfasdf");
-		return "";
+		return "board/write";
 	}
+	
 }

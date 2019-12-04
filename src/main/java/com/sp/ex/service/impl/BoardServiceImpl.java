@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.dto.postDTO;
 import com.sp.ex.mapper.BoardMapper;
 import com.sp.ex.service.*;
@@ -34,6 +35,19 @@ public class BoardServiceImpl implements BoardService{
 		
 		
 		return mapper.showPost(idx);
+	}
+
+
+	@Override
+	public int getPostCount() {
+		
+		return mapper.getPostCount();
+	}
+
+
+	@Override
+	public List<postDTO> getPostList(PagingDTO pageDTO) {
+		return mapper.getPostList(pageDTO);
 	}
 
 }

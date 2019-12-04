@@ -9,7 +9,14 @@ public class postDTO {
 	
 	public postDTO(int num, String author, String title, String content, String time) {
 		super();
-		this.num = num;
+		this.num=num;
+		this.author = author;
+		this.title = title;
+		this.content = content;
+		this.time = time;
+	}
+	public postDTO( String author, String title, String content, String time) {
+		super();
 		this.author = author;
 		this.title = title;
 		this.content = content;

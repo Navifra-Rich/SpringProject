@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.RequestDispatcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -114,8 +115,8 @@ public class MainController {
 		if(isExist) {
 			System.out.println("logIn!");
 			model.addAttribute("viewAll",boardService.viewAll());
-			
-			return "board/boardWrite";
+			//RequestDispatcher rd=request;
+			return "board/boardMain";
 		}else {
 			return "redirect:/";
 		}	

@@ -19,4 +19,10 @@
 	<select id="showPost" resultType="com.sp.ex.dto.postDTO" parameterType="int">
 		select * from board where id= #{idx}
 	</select>
+	<select id="getPostCount" resultType="int">
+		select Count(*) from board
+	</select>
+	<select id="getPostList" resultType="com.sp.ex.dto.PagingDTO">
+		
+	</select>
 </mapper>

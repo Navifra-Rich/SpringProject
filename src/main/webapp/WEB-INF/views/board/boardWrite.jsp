@@ -69,42 +69,26 @@ div.right {
 	<br>
 	<br>
 	<br>
-	<div>
+
 		<div class="left">
 
-			<c:forEach items="${viewAll}" var="list" varStatus="status">
-				<p id="${list.num}" class="title">제목 : ${list.title}</p>
-				<p>저자 : ${list.author}</p>
-				<p>번호 : ${list.num}</p>
-				<p>--------------------------------------------</p>
-			</c:forEach>
+	
 
 		</div>
 		<div class="right">
-			<div id=writeFormd style="display: none">
-				<form method="post" action="/write" id="writeform">
-					<input type="text" name="writer" style="width: 20%;"
-						placeholder="작성자" /><br> <input type="text" name="title"
-						style="width: 40%;" placeholder="제목" /> <br> <br>
+			<div id=writeFormd >
+				<form method="post" action="/ex/Board/write" id="writeform">
+					<input type="text" name="author" style="width: 20%;"placeholder="작성자" /><br> 
+					<input type="text" name="title" style="width: 40%;" placeholder="제목" /> <br> <br>
 					<textarea id="summernote" name="content"></textarea>
 					<input id="subBtn" type="button" value="글 작성" style="float: right;"
 						onclick="goWrite(this.form)" />
+						<input type="hidden" name="time" value="111">
 				</form>
 			</div>
-			<div id=viewForm style="display: none">
 
-				<form action="/ex/Kakao/self" method="POST">
-					<span id="span_title">${selectedPost.title}</span> <span
-						id="span_author">${selectedPost.author}</span> <span
-						id="span_content">${selectedPost.content}</span>
-						<input type="hidden" name="span_title" value="${selectedPost.title}">
-						<input type="hidden" name="span_author" value="${selectedPost.author}">
-						 <input type="hidden" name="span_content" value="${selectedPost.content}">
-						 <input type="submit" name="submit" value="전송">
-				</form>
-			</div>
 		</div>
-	</div>
+
 	<script>
 		//---------------------------------------글쓰기 버튼 누름---------------------------------
 		function goWrite(frm) {
@@ -128,7 +112,6 @@ div.right {
 		}
 		//--------------------------------------글 목록에서 글 선택----------------------------------
 		$('.title').on('click', function() {
-
 			var frm = $('#boardID');
 			$('#boardID input[name="idx"]').val(this.id)
 			frm.submit();
