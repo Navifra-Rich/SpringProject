@@ -58,7 +58,7 @@ div.right {
 			placeholder : 'content',
 			minHeight : 370,
 			maxHeight : null,
-			focus : true,
+			focus : false,
 			lang : 'ko-KR'
 		});
 	});
@@ -71,8 +71,6 @@ div.right {
 	<br>
 
 		<div class="left">
-
-	
 
 		</div>
 		<div class="right">

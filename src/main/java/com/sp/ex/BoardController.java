@@ -1,5 +1,7 @@
 package com.sp.ex;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sp.ex.dto.PagingDTO;
-import com.sp.ex.dto.postDTO;
+import com.sp.ex.common.BoardCommon;
+import com.sp.ex.dto.*;
 import com.sp.ex.service.BoardService;
 
 @Controller
@@ -32,6 +34,7 @@ public class BoardController {
 		boardService.createPost(dto);
 		PagingDTO pageDTO = new PagingDTO();
 		model.addAttribute("page",pageDTO);
+		pageDTO.setPageInfo(1,boardService.getPostCount(),null);
 		model.addAttribute("viewAll",boardService.viewAll());
 		return "board/boardMain";
 	}
@@ -40,24 +43,74 @@ public class BoardController {
 		System.out.println("in");
 		System.out.println("idx = "+idx);
 		model.addAttribute("selectedPost",boardService.showPost(idx));
-		model.addAttribute("viewAll",boardService.viewAll());
 		System.out.println("selected index = "+idx);
+		
+		
+		//---------------------------------------------------게시글 목록 불러오기-------------------------
+		PagingDTO pageDTO = new PagingDTO();
+		pageDTO.setPageInfo(1, boardService.getPostCount(),null);
+		model.addAttribute("page",pageDTO);
+		model.addAttribute("viewAll",boardService.getPostList(pageDTO));
+		//---------------------------------------------------댓글 목록 불러오기-------------------------
+		//model.addAttribute("comments",boardService.getCommentList(idx));
+
 		return "board/boardPost";
 	}
+	
+	
 	@RequestMapping(value="/getBoardList" ,method=RequestMethod.GET)
 	public String getBoardList(Model model, 
-			@RequestParam(required=false, defaultValue="1")int page, 
-			@RequestParam(required=false, defaultValue="1")int range) {
+			@RequestParam(required=false, defaultValue="1")int setPage,
+			@RequestParam(required=false, defaultValue="")String searchContent) {
 		
 		
 		System.out.println("in getBoardList");
 		
-		int temp = boardService.getPostCount();
-		System.out.println("포스트 수 = "+temp);
+		if(searchContent.equals("")) {
+			System.out.println("검색 내용 없음");
+			
+			PagingDTO pageDTO = new PagingDTO();
+			pageDTO.setPageInfo(setPage, boardService.getPostCount(),null);
+			model.addAttribute("page",pageDTO);
+			model.addAttribute("viewAll",boardService.getPostList(pageDTO));
+			
+		}else{
+			System.out.println("검색 내용 = "+searchContent);
+			
+			PagingDTO pageDTO = new PagingDTO();
+			pageDTO.setPageInfo(setPage, boardService.getPostCount(),searchContent);
+			model.addAttribute("page",pageDTO);
+			model.addAttribute("viewAll",boardService.getPostList(pageDTO));
+			model.addAttribute("searchQuery",searchContent);
+		}
+		//---------------------------------------------------게시글 목록 불러오기-------------------------
+		/*
 		PagingDTO pageDTO = new PagingDTO();
-		pageDTO.setPageInfo(page, range);
+		pageDTO.setPageInfo(setPage, boardService.getPostCount());
 		model.addAttribute("page",pageDTO);
-		model.addAttribute("viewAll",boardService.viewAll());
+		model.addAttribute("viewAll",boardService.getPostList(pageDTO));
+		*/
+		
+		return "board/boardMain";
+	}
+	@RequestMapping(value="/addComment", method=RequestMethod.GET)
+	public String addComment(Model model,
+			@RequestParam("id")String id,
+			@RequestParam("postNum")String boardNum,
+			@RequestParam("content")String content) {
+		System.out.println("in addComment");
+		CommentDTO dto=new CommentDTO(id,boardNum,content,"1");
+		boardService.createComment(dto);
+		
+		return "board/boardPost";
+	}
+	
+	@RequestMapping(value="/searchPost", method=RequestMethod.GET)
+	public String searchPost(Model model,
+			@RequestParam("content")String content) {
+		
+		System.out.println("in searchPost");
+		
 		return "board/boardMain";
 	}
 }

@@ -7,7 +7,8 @@
 <title>Home</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-
+<script
+	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 </head>
 <body>
 	<h1>Hello world!</h1>
@@ -33,5 +34,12 @@
 	<form action="Board/getBoardList" method="GET">
 		<input type="submit" value="temp">
 	</form>
+	<div class="a">asdf</div>
+	<script>
+	$('.a').on('click',function(){
+	alert("!");
+	location.href="/ex/Board/writeForm";
+})
+	</script>
 </body>
 </html>

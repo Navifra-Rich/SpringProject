@@ -58,6 +58,13 @@
 <body>
 	<div class="head"></div>
 	<div class="middle">
+		<div class="search">
+			<form action="/ex/Board/getBoardList" id="searchPost" method="GET">
+				<input type="text" name="searchContent"> <input
+					type="submit" value="검색">
+			</form>
+
+		</div>
 		<div class="left"></div>
 		<div class="content">
 			<form action="/ex/Board/selectPost" method="GET" id="selectPost">
@@ -74,12 +81,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach begin="0" end="4" var="post" items="${viewAll}"
-						varStatus="status">
+					<c:forEach var="post" items="${viewAll}" varStatus="status">
 						<tr>
 							<td>${post.num}</td>
 							<td class="title" id="${post.num}">${post.title}</td>
 							<td>${post.content}</td>
+							<td>${post.comCount}</td>
 							<td>${post.time}</td>
 						</tr>
 					</c:forEach>
@@ -96,20 +103,76 @@
 		<p>현재 페이지${page.curPage}</p>
 		<p>시작 페이지${page.startPage}</p>
 		<p>끝 페이지${page.endPage}</p>
-		<p>삐로롱</p>
+		<p>페이지 시작<%=request.getAttribute("abcd")%></p>
+		<c:if test="${page.prev}">
+			<input type="button" value="이전" id="prev" class="selectPage">
+		</c:if>
 		<c:forEach varStatus="idx" var="page" begin="${page.startPage}"
-			end="${page.endPage}">
-			<p>${idx.current }</p>
+			end="${page.endPage-1}">
+			<input type="button" value="${idx.current}" class="selectPage">
 		</c:forEach>
-		<p>뾰로롱</p>
+		<c:if test="${page.next}">
+			<input type="button" value="다음" id="next" class="selectPage">
+		</c:if>
+		<p>끝</p>
 	</div>
+	<input type="button" id="temp" value="aaaa">
+	<div>a</div>
+	<div>b</div>
+	<div>c</div>
+	<div>d</div>
 </body>
+<%
+	String ss = (String) request.getAttribute("searchQuery");
+%>
 <script>
+	$('#temp').on('click', function() {
+		alert("!");
+		var aaa ="<%=ss%>";
+		alert("!!!" + aaa);
+	});
+	$(document).ready(function() {
+		alert("!");
+		var aaa ="<%=ss%>";
+
+		alert("!!!" + aaa);
+
+	});
 	$('.title').on('click', function() {
 		var frm = $('#selectPost');
 		frm.attr('method', 'GET');
 		frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
 		frm.submit();
 	});
+	$('.selectPage').on('click', function() {
+		var url = "";
+		alert("id = " + this.id);
+		//--------------------------------------------페이지 번호 붙임--------------------------------------------------------
+		if (this.id == "prev") {
+			url = '/ex/Board/getBoardList?setPage=' + $
+			{
+				page.curPage - page.range
+			}
+			;
+		} else if (this.id == "next") {
+			url = '/ex/Board/getBoardList?setPage=' + $
+			{
+				page.curPage + page.range
+			}
+			;
+		} else {
+			url = '/ex/Board/getBoardList?setPage=' + this.value;
+		}
+		
+		//--------------------------------------------검색 쿼리 붙임--------------------------------------------------------(
+		var query = "<%=ss%>";
+		if(query==null){
+			alert("검색내용 없음");
+		}else{
+			url+="&searchContent="+query;
+		}
+		alert("url = "+url);
+		location.href = url;
+	})
 </script>
 </html>

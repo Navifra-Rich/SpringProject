@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.MemberService;
 
@@ -114,7 +115,11 @@ public class MainController {
 		boolean isExist = memberService.logIn(id, pw);
 		if(isExist) {
 			System.out.println("logIn!");
-			model.addAttribute("viewAll",boardService.viewAll());
+			
+			PagingDTO pageDTO = new PagingDTO();
+			pageDTO.setPageInfo(1, boardService.getPostCount(),null);
+			model.addAttribute("viewAll",boardService.getPostList(pageDTO));
+			model.addAttribute("page",pageDTO);
 			//RequestDispatcher rd=request;
 			return "board/boardMain";
 		}else {

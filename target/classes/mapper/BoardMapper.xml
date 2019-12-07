@@ -11,18 +11,49 @@
 		</selectKey>
 		Insert into board values(#{num},#{title},#{author},#{content},#{time})
 	</insert>
-	
+
 	<select id="viewAll" resultType="com.sp.ex.dto.postDTO">
 		Select * from board
 	</select>
-	
-	<select id="showPost" resultType="com.sp.ex.dto.postDTO" parameterType="int">
+
+	<select id="showPost" resultType="com.sp.ex.dto.postDTO"
+		parameterType="int">
 		select * from board where id= #{idx}
 	</select>
 	<select id="getPostCount" resultType="int">
 		select Count(*) from board
 	</select>
-	<select id="getPostList" resultType="com.sp.ex.dto.PagingDTO">
-		
+	<select id="getPostList" resultType="com.sp.ex.dto.postDTO"
+		parameterType="int">
+		select t.id, t.title, t.author, t.content, t.time
+		from
+		(select a.*, ROWNUM as rnum from board a) t
+		where rnum between
+		#{startPost}and #{endPost}
 	</select>
+
+	<insert id="createComment"
+		parameterType="com.sp.ex.dto.CommentDTO">
+		INSERT into board_Comment
+		values(reply_seq.NEXTVAL,#{id},#{content},#{time},#{postNum})
+	</insert>
+	<select id="getCommentList" parameterType="int">
+		select * from
+		board_comment where postNum=#{postNum}
+	</select>
+
+	<select id="getSearchedPostList"
+		resultType="com.sp.ex.dto.postDTO">
+		select  a.id, a.title, a.author, a.content, a.time
+		from (
+				select a.*,ROWNUM as rnum
+				from (
+						select *
+						from board
+						where board.content like '%${query}%'
+					 ) a
+			) a
+		where rnum between #{startPost} and #{endPost}
+	</select>
+
 </mapper>
