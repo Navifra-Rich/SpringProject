@@ -13,6 +13,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -110,11 +112,18 @@ public class MainController {
 	}
 	
 	@RequestMapping("/logIn")
-	public String logIn(@RequestParam("id")String id, @RequestParam("pw")String pw,Model model) {
+	public String logIn(
+			HttpServletRequest request,
+			@RequestParam("id")String id, 
+			@RequestParam("pw")String pw,
+			Model model) {
 		System.out.println("logIn in MainController");
 		boolean isExist = memberService.logIn(id, pw);
 		if(isExist) {
 			System.out.println("logIn!");
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("userID", id);
 			
 			PagingDTO pageDTO = new PagingDTO();
 			pageDTO.setPageInfo(1, boardService.getPostCount(),null);

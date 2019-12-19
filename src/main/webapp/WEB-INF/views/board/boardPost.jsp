@@ -15,8 +15,8 @@
 html, body {
 	height: 100%;
 }
-
 .head {
+	display:block;
 	margin: 0;
 	width: 100%;
 	height: 20%;
@@ -24,8 +24,8 @@ html, body {
 }
 
 .middle {
-	height: 300px;
-	position: relative;
+	display:block;
+	height: 500px;
 }
 
 .content {
@@ -41,7 +41,7 @@ html, body {
 	display: inline-block;
 	margin: 0;
 	width: 10%;
-	height: 100%;
+	height: 500px;
 	background-color: red;
 }
 
@@ -63,14 +63,27 @@ html, body {
 					${selectedPost.author}</span><br /> <br /> <br /> <span>글 내용 :
 					${selectedPost.content}</span><br /> <br />
 			</div>
+			<div class="files">
+				<c:forEach var="files" items="${files}">
+				<p>첨부된 파일 =/ex/File/fileDownload?path=${files.directory}</p>
+				<input type="button" value="${files.name}" onclick="downloadFile();">
+				</c:forEach>
+			</div>
 			<div class="comment">
 				여따가 댓글 ㅇㅇ<br />
-				<form class="commentForm" action="/ex/Board/addComment">
+				<form class="commentForm" action="/ex/Comment/writeComment">
 				<input type="text" name="id" value="">
 					<textarea id="summernote" name="content"></textarea>
 					<input type="button" id="commentSubmit" value="쓰기">
 					<input type="hidden" name="postNum" value="${selectedPost.num }">
+					<input type="hidden" name="curPage" value="${page.curPage }">
 				</form>
+			</div>
+			<div class="commentList">
+				<c:forEach var="coms" items="${comments}" varStatus="status">
+				<p>댓글 id = ${coms.id}</p>
+				<p>댓글 내용 = ${coms.content}</p></br>
+				</c:forEach>
 			</div>
 		</div>
 
@@ -106,11 +119,12 @@ html, body {
 	<div class="page">
 		<p>현재 페이지 = ${page.curPage}</p>
 		<c:forEach var="pg" varStatus="status" begin="${page.startPage }"
-			end="${page.endPage }">
+			end="${page.endPage}">
 			<input type="button" value="${status.current}" class="selectPage">
 		</c:forEach>
 	</div>
 	<script>
+	
 		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
@@ -126,6 +140,12 @@ html, body {
 			var frm=$('.commentForm')
 			frm.submit();
 		});
+		function downloadFile(){
+			var temp="${files['0'].directory}";
+			var url= "/ex/File/fileDownload?path="+temp;
+			alert(temp);
+			location.href=url;
+		}
 	</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.sp.ex.service.impl;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.sp.ex.dto.CommentDTO;
 import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.dto.postDTO;
+import com.sp.ex.dto.FileDTO;
 import com.sp.ex.mapper.BoardMapper;
 import com.sp.ex.service.*;
 
@@ -22,7 +24,12 @@ public class BoardServiceImpl implements BoardService{
 		System.out.println("in boardServiceImpl");
 		mapper.createPost(dto);
 	}
-
+	@Override
+	public void createPost2(postDTO dto, Map<String, Object> map) {
+		System.out.println("in createPost2");
+		
+		mapper.createPost(dto);
+	}
 
 	@Override
 	public List<postDTO> viewAll() {
@@ -68,6 +75,31 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<CommentDTO> getCommentList(int postNum) {
 		return mapper.getCommentList(postNum);
+	}
+	@Override
+	public void writeFilePath(List<FileDTO> fileDTO) {
+		for(int i=0;i<fileDTO.size();i++) {
+			mapper.writeFilePath(fileDTO.get(i));
+		}
+		
+	}
+	/*
+	@Override
+	public void writeFilePath(Map<String, String> filePath) {
+		
+		for(Map.Entry<String, String> entry : filePath.entrySet()) {
+			System.out.println("key = "+entry.getKey()+" value = "+entry.getValue());
+			mapper.writeFilePath(entry.getKey(), entry.getValue());
+		}
+	}*/
+	@Override
+	public int getPostIDbyUser(String userID) {
+		return mapper.getPostIDbyUser(userID);
+	}
+	@Override
+	public List<FileDTO> getFileList(String postID) {
+		System.out.println("---------------in getFileList---------------");
+		return mapper.getFileList(postID);
 	}
 
 }

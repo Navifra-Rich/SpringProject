@@ -5,19 +5,19 @@ public class CommentDTO {
 	String id;
 	String content;
 	String time;
-	String postNum;
+	int postNum;
 	
-	public CommentDTO(String id, String content, String time, String postNum) {
+	public CommentDTO(String id, String content, String time, int postNum) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.time = time;
 		this.postNum = postNum;
 	}
-	public String getpostNum() {
+	public int getpostNum() {
 		return postNum;
 	}
-	public void setpostNum(String postNum) {
+	public void setpostNum(int postNum) {
 		this.postNum = postNum;
 	}
 	public int getIdx() {

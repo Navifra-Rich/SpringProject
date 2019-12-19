@@ -17,6 +17,7 @@
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 <style>
 .head {
+	display:block;
 	margin: 0;
 	width: 100%;
 	height: 20%;
@@ -24,8 +25,8 @@
 }
 
 .middle {
-	height: 300px;
-	position: relative;
+	display:block;
+	height: 500px;
 }
 
 .content {
@@ -33,7 +34,6 @@
 	position: absolute;
 	left: 10%;
 	height: 100%;
-	overflow: hidden;
 	background-color: green;
 	width: 100%;
 }
@@ -42,7 +42,7 @@
 	display: inline-block;
 	margin: 0;
 	width: 10%;
-	height: 100%;
+	height: 500px;
 	background-color: red;
 }
 
@@ -56,6 +56,9 @@
 </style>
 
 <body>
+<div>
+<form action = "/ex/Board/temp"><input type="submit"></form>
+</div>
 	<div class="head"></div>
 	<div class="middle">
 		<div class="search">
@@ -95,7 +98,7 @@
 		</div>
 	</div>
 	<div class="write">
-		<form action="/ex/Board/writeForm" method="POST">
+		<form action="/ex/Board/writeForm" method="POST" style="display:block">
 			<input type="submit" value="글쓰기">
 		</form>
 	</div>
@@ -132,10 +135,7 @@
 		alert("!!!" + aaa);
 	});
 	$(document).ready(function() {
-		alert("!");
-		var aaa ="<%=ss%>";
 
-		alert("!!!" + aaa);
 
 	});
 	$('.title').on('click', function() {

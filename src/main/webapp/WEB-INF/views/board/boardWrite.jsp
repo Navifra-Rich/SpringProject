@@ -50,7 +50,6 @@ div.right {
 			alert("바꿈 " + $('#viewForm').css("display"));
 
 			$('#span_title').html('${selectedPost.title}');
-			$('#span_author').html('${selectedPost.author}');
 			$('#span_content').html('${selectedPost.content}');
 			//alert("Out내용 = " + '${selectedPost.content}');
 		}
@@ -75,10 +74,10 @@ div.right {
 		</div>
 		<div class="right">
 			<div id=writeFormd >
-				<form method="post" action="/ex/Board/write" id="writeform">
-					<input type="text" name="author" style="width: 20%;"placeholder="작성자" /><br> 
+				<form method="post" action="/ex/Board/write" id="writeform" enctype="multipart/form-data">
 					<input type="text" name="title" style="width: 40%;" placeholder="제목" /> <br> <br>
 					<textarea id="summernote" name="content"></textarea>
+					<input type="file" name="file">
 					<input id="subBtn" type="button" value="글 작성" style="float: right;"
 						onclick="goWrite(this.form)" />
 						<input type="hidden" name="time" value="111">
@@ -91,13 +90,10 @@ div.right {
 		//---------------------------------------글쓰기 버튼 누름---------------------------------
 		function goWrite(frm) {
 			var title = frm.title.value;
-			var author = frm.author.value;
 			var content = frm.content.value;
-			alert("t = " + title + " w = " + author + " c = " + content);
+			alert("t = " + title  + " c = " + content);
 			if (title.trim() == '') {
 				alert("t");
-			} else if (author.trim() == '') {
-				alert("w");
 			} else if (content.trim() == '') {
 				alert("c");
 			}

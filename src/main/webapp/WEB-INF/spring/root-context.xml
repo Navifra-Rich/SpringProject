@@ -37,6 +37,7 @@
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 
+	
 
 	<mybatis-spring:scan
 		base-package="com.sp.ex.mapper" />
