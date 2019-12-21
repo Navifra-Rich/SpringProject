@@ -22,6 +22,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
 <!-- include summernote-ko-KR -->
 <script src="/resources/js/summernote-ko-KR.js"></script>
+
 <title>글쓰기</title>
 <style>
 div {
@@ -69,29 +70,38 @@ div.right {
 	<br>
 	<br>
 
-		<div class="left">
-
+	<div class="left"></div>
+	<div class="right">
+		<div id=writeFormd>
+			<form method="post" action="/ex/Board/write" id="writeform"
+				enctype="multipart/form-data">
+				<input type="text" name="title" style="width: 40%;" placeholder="제목" />
+				<br> 날짜 : <input type="date" name="date"><br> 시간 :
+				<select name="startTime">
+					<c:forEach begin="0" end="23" varStatus="idx">
+					<option value="${idx.index}"/>${idx.index}
+					</c:forEach>
+				</select>시 부터 <select name="endTime">
+					<c:forEach begin="1" end="24" varStatus="idx">
+					<option value="${idx.index}"/>${idx.index}
+					</c:forEach>
+				</select>시 까지
+				<textarea id="summernote" name="content"></textarea>
+				<input type="file" name="file"> <input id="subBtn"
+					type="button" value="글 작성" style="float: right;"
+					onclick="goWrite(this.form)" /> <input type="hidden" name="time"
+					value="111">
+			</form>
 		</div>
-		<div class="right">
-			<div id=writeFormd >
-				<form method="post" action="/ex/Board/write" id="writeform" enctype="multipart/form-data">
-					<input type="text" name="title" style="width: 40%;" placeholder="제목" /> <br> <br>
-					<textarea id="summernote" name="content"></textarea>
-					<input type="file" name="file">
-					<input id="subBtn" type="button" value="글 작성" style="float: right;"
-						onclick="goWrite(this.form)" />
-						<input type="hidden" name="time" value="111">
-				</form>
-			</div>
 
-		</div>
+	</div>
 
 	<script>
 		//---------------------------------------글쓰기 버튼 누름---------------------------------
 		function goWrite(frm) {
 			var title = frm.title.value;
 			var content = frm.content.value;
-			alert("t = " + title  + " c = " + content);
+			alert("t = " + title + " c = " + content);
 			if (title.trim() == '') {
 				alert("t");
 			} else if (content.trim() == '') {

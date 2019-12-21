@@ -9,7 +9,7 @@
 			select
 			board_seq.nextval from dual
 		</selectKey>
-		Insert into board values(#{num},#{title},#{author},#{content},#{time},0)
+		Insert into board values(#{num},#{title},#{author},#{content},#{time},0,#{startTime},#{endTime},#{day})
 
 	</insert>
 

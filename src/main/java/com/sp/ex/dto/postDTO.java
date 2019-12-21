@@ -7,6 +7,24 @@ public class postDTO {
 	String content;
 	String time;
 	int comCount;
+	
+	String day;
+	String startTime;
+	String endTime;
+	
+	public postDTO(int num, String author, String title, String content, String time, int comCount, String day,
+			String startTime, String endTime) {
+		super();
+		this.num = num;
+		this.author = author;
+		this.title = title;
+		this.content = content;
+		this.time = time;
+		this.comCount = comCount;
+		this.day = day;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 	public postDTO(int num, String author, String title, String content, String time, int comCount) {
 		super();
 		this.num=num;
@@ -30,6 +48,26 @@ public class postDTO {
 		this.title = title;
 		this.content = content;
 		this.time = time;
+	}
+	
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 	
 	public int getComCount() {

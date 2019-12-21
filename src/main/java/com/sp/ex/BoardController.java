@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.sp.ex.common.BoardCommon;
 import com.sp.ex.dto.*;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.CommentService;
+import com.sp.ex.service.EventService;
 
 @Controller
 @RequestMapping("/Board")
@@ -34,6 +36,9 @@ public class BoardController {
 
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private EventService eventService;
 
 	@RequestMapping("/writeForm")
 	public String wirteForm(HttpServletRequest request) {
@@ -52,7 +57,10 @@ public class BoardController {
 	@RequestMapping("/write")
 	public String writePost(HttpServletRequest request, @RequestParam("title") String title,
 			@RequestParam("content") String content, @RequestParam("time") String time,
-			@RequestParam("file") MultipartFile file, Model model) {
+			@RequestParam("file") MultipartFile file, @RequestParam("date") String day,
+			@RequestParam("startTime") String startTime,@RequestParam("endTime") String endTime,
+			Model model) {
+		System.out.println("date = "+day+" startime = "+startTime);
 		//----------------파일 이름 임시
 		String fileName="fileName";
 		
@@ -63,6 +71,11 @@ public class BoardController {
 		System.out.println("in write");
 
 		postDTO dto = new postDTO(userID, title, content, time);
+		
+		dto.setDay(day);
+		dto.setStartTime(startTime);
+		dto.setEndTime(endTime);
+		
 		boardService.createPost(dto);
 		PagingDTO pageDTO = new PagingDTO();
 		model.addAttribute("page", pageDTO);
@@ -167,5 +180,13 @@ public class BoardController {
 	public String searchPost(Model model, @RequestParam("content") String content) {
 		System.out.println("in searchPost");
 		return "board/boardMain";
+	}
+	@RequestMapping(value="/attend")
+	public void attend(
+			@RequestParam("postID")String postID,
+			HttpServletRequest request,
+			HttpServletResponse response) {
+		String userID = request.getSession().getAttribute("userID").toString();
+		eventService.attendEvent(postID, userID);
 	}
 }

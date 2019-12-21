@@ -17,7 +17,6 @@ public class BoardCommon {
 		pageDTO.setPageInfo(setPage, boardService.getPostCount(),null);
 		model.addAttribute("page",pageDTO);
 		model.addAttribute("viewAll",boardService.getPostList(pageDTO));
-		
 		return;
 	}
 }

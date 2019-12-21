@@ -142,6 +142,7 @@
 		var frm = $('#selectPost');
 		frm.attr('method', 'GET');
 		frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
+		alert("id = "+this.id);
 		frm.submit();
 	});
 	$('.selectPage').on('click', function() {

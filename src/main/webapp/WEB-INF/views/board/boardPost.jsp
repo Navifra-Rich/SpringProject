@@ -15,8 +15,9 @@
 html, body {
 	height: 100%;
 }
+
 .head {
-	display:block;
+	display: block;
 	margin: 0;
 	width: 100%;
 	height: 20%;
@@ -24,7 +25,7 @@ html, body {
 }
 
 .middle {
-	display:block;
+	display: block;
 	height: 500px;
 }
 
@@ -59,30 +60,38 @@ html, body {
 		<div class="left"></div>
 		<div class="content">
 			<div>
-				<span>제목 : ${selectedPost.title}</span><br /> <span>글쓴이 :
+				<span>제목 : ${selectedPost.title}</span><br /> 
+				<span>날짜 : ${selectedPost.day}</span><br />
+				<span>시간 : ${selectedPost.startTime}시 부터</span><br />
+				<span>시간 : ${selectedPost.endTime}시 까지</span><br />
+				<input type="button" value="참여하기" onClick="attend()">
+				<span>글쓴이 :
 					${selectedPost.author}</span><br /> <br /> <br /> <span>글 내용 :
 					${selectedPost.content}</span><br /> <br />
 			</div>
 			<div class="files">
 				<c:forEach var="files" items="${files}">
-				<p>첨부된 파일 =/ex/File/fileDownload?path=${files.directory}</p>
-				<input type="button" value="${files.name}" onclick="downloadFile();">
+					<p>첨부된 파일 =/ex/File/fileDownload?path=${files.directory}</p>
+					<input type="button" value="${files.name}"
+						onclick="downloadFile();">
 				</c:forEach>
 			</div>
 			<div class="comment">
-				여따가 댓글 ㅇㅇ<br />
+				댓글 쓰기<br />
 				<form class="commentForm" action="/ex/Comment/writeComment">
-				<input type="text" name="id" value="">
+					<input type="text" name="id" value="">
 					<textarea id="summernote" name="content"></textarea>
-					<input type="button" id="commentSubmit" value="쓰기">
-					<input type="hidden" name="postNum" value="${selectedPost.num }">
+					<input type="button" id="commentSubmit" value="쓰기"> <input
+						type="hidden" name="postNum" value="${selectedPost.num }">
 					<input type="hidden" name="curPage" value="${page.curPage }">
-				</form>
+				</form>	
 			</div>
 			<div class="commentList">
+			댓글 목록<br/>
 				<c:forEach var="coms" items="${comments}" varStatus="status">
-				<p>댓글 id = ${coms.id}</p>
-				<p>댓글 내용 = ${coms.content}</p></br>
+					<p>댓글 id = ${coms.id}</p>
+					<p>댓글 내용 = ${coms.content}</p>
+					<br/>
 				</c:forEach>
 			</div>
 		</div>
@@ -90,8 +99,8 @@ html, body {
 	</div>
 	<div class="left"></div>
 	<div class="content">
-	<form action="/ex/Board/selectPost" method="GET" id="selectPost">
-	</form>
+		<form action="/ex/Board/selectPost" method="GET" id="selectPost">
+		</form>
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
@@ -124,7 +133,7 @@ html, body {
 		</c:forEach>
 	</div>
 	<script>
-	
+	var postID="${selectedPost.num}";
 		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
@@ -137,14 +146,18 @@ html, body {
 
 		$("#commentSubmit").on('click', function() {
 			alert("얍");
-			var frm=$('.commentForm')
+			var frm = $('.commentForm')
 			frm.submit();
 		});
-		function downloadFile(){
-			var temp="${files['0'].directory}";
-			var url= "/ex/File/fileDownload?path="+temp;
+		function downloadFile() {
+			var temp = "${files['0'].directory}";
+			var url = "/ex/File/fileDownload?path=" + temp;
 			alert(temp);
-			location.href=url;
+			location.href = url;
+		}
+		function attend(){
+			alert("${selectedPost.num}");
+			location.href="/ex/Board/attend?postID="+postID;
 		}
 	</script>
 </body>
