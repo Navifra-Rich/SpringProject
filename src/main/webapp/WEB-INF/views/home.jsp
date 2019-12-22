@@ -24,8 +24,8 @@
 	<form action="Kakao/getFriendList" method="POST">
 		<input type="submit" value="메세지">
 	</form>
-	<form action="Main/test" method="POST">
-		<input type="submit" value="main/test">
+	<form action="Gogl/getCode" method="POST">
+		<input type="submit" value="google/gettoken">
 	</form>
 	<form action="Kakao/self" method="POST">
 		<input type="submit" value="self">

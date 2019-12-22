@@ -1,34 +1,41 @@
 @charset "UTF-8";
-.head {
+head, body{
+	width:100%;
+	height:100%;
+}
+.myhead {
+	display:block;
 	margin: 0;
 	width: 100%;
-	height: 20%;
+	height: 150px;
 	background-color: black;
 }
 
-.middle {
-	position: relative;
+.mymiddle {
+	display: inline-block;
+	height: 500px;
+	position:relative;
+	width:100%;
 }
 
-.content {
+.mycontent {
 	display: inline-block;
-	position: absolute; 
-	left:10%;
+	position: absolute;
+	left: 10%;
 	height: 100%;
-	overflow: hidden;
 	background-color: green;
 	width: 100%;
 }
 
-.left {
+.myleft {
 	display: inline-block;
 	margin: 0;
 	width: 10%;
-	height: 100%;
+	height: 500px;
 	background-color: red;
 }
 
-.right {
+.myright {
 	display: inline-block;
 	margin: 0;
 	width: 10%;

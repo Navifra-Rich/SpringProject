@@ -11,54 +11,12 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<style>
-html, body {
-	height: 100%;
-}
-
-.head {
-	display: block;
-	margin: 0;
-	width: 100%;
-	height: 20%;
-	background-color: black;
-}
-
-.middle {
-	display: block;
-	height: 500px;
-}
-
-.content {
-	display: inline-block;
-	position: absolute;
-	left: 10%;
-	height: 100%;
-	background-color: green;
-	width: 100%;
-}
-
-.left {
-	display: inline-block;
-	margin: 0;
-	width: 10%;
-	height: 500px;
-	background-color: red;
-}
-
-.right {
-	display: inline-block;
-	margin: 0;
-	width: 10%;
-	height: 100%;
-	width: 10%;
-}
-</style>
+<link rel="stylesheet" href="<c:url value='/resources/css/myCss.css'/>" />
 <body>
-	<div class="head"></div>
-	<div class="middle">
-		<div class="left"></div>
-		<div class="content">
+	<div class="myhead"></div>
+	<div class="mymiddle">
+		<div class="myleft"></div>
+		<div class="mycontent">
 			<div>
 				<span>제목 : ${selectedPost.title}</span><br /> 
 				<span>날짜 : ${selectedPost.day}</span><br />

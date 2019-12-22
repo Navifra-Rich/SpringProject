@@ -1,7 +1,6 @@
 package com.sp.ex;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +13,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sp.ex.common.BoardCommon;
 import com.sp.ex.dto.*;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.CommentService;
@@ -42,7 +39,7 @@ public class BoardController {
 
 	@RequestMapping("/writeForm")
 	public String wirteForm(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+		//HttpSession session = request.getSession();
 
 		//System.out.println("user id = " + session.getAttribute("userID"));
 		return "board/boardWrite";
@@ -118,7 +115,7 @@ public class BoardController {
 		// ---------------------------------------------------게시글 목록
 		// 불러오기-------------------------
 		PagingDTO pageDTO = new PagingDTO();
-		pageDTO.setPageInfo(1, boardService.getPostCount(), null);
+		pageDTO.setPageInfo(1, boardService.getPostCount(),null);
 		model.addAttribute("page", pageDTO);
 		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
 		

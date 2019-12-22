@@ -131,16 +131,18 @@ public class MainController {
 			model.addAttribute("page",pageDTO);
 			//RequestDispatcher rd=request;
 			return "board/boardMain";
+			//return "main/index";
 		}else {
 			return "redirect:/";
 		}	
 	}
 	
-	@RequestMapping("signUp")
+	@RequestMapping("/signUp")
 	public String signUp(@RequestParam("id")String id, @RequestParam("name")String name, @RequestParam("pw")String pw,Model model) {
 		System.out.println("sign up! in controller");
 		
 		model.addAttribute("dtos",memberService.signUp(id,name,pw));
 		return "member/signUp";
 	}
+	
 }
