@@ -130,13 +130,19 @@ public class MainController {
 			model.addAttribute("viewAll",boardService.getPostList(pageDTO));
 			model.addAttribute("page",pageDTO);
 			//RequestDispatcher rd=request;
-			return "board/boardMain";
+			return "home";
 			//return "main/index";
 		}else {
 			return "redirect:/";
 		}	
 	}
 	
+	@RequestMapping("logOut")
+	public String logOut(HttpServletRequest request) {
+		HttpSession session= request.getSession();
+		session.removeAttribute("userID");
+		return "redirect:/";
+	}
 	@RequestMapping("/signUp")
 	public String signUp(@RequestParam("id")String id, @RequestParam("name")String name, @RequestParam("pw")String pw,Model model) {
 		System.out.println("sign up! in controller");
@@ -144,5 +150,9 @@ public class MainController {
 		model.addAttribute("dtos",memberService.signUp(id,name,pw));
 		return "member/signUp";
 	}
-	
+	@RequestMapping("/myPage")
+	public String myPage() {
+		
+		return "member/myPage";
+	}
 }
