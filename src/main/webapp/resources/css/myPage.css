@@ -27,11 +27,14 @@ head, body{
 	background-color:black;
 }
 .column{
-	float:left;
-	width:50%;
-	background-color: green;
+	float: left;
+    width: 45%;
+    height: 300px;
+    background-color: green;
     margin: 5px;
     min-width: 300px;
+    max-width: 500px;
+    display: inline-block;
 }
 .shell{
 	width

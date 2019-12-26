@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.service.BoardService;
+import com.sp.ex.service.GoogleOAuthService;
 import com.sp.ex.service.MemberService;
 
 @Controller
@@ -37,6 +38,8 @@ public class MainController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Autowired
+	private GoogleOAuthService googleService;
 	
 	@RequestMapping(value ="/rrr")
 	public String redirect(@RequestParam("code")String code) {
@@ -99,7 +102,7 @@ public class MainController {
 		return "redirect:"+uri;
 	}
 	
-	@RequestMapping("insertMember")
+	@RequestMapping("/insertMember")
 	public String insertMember(@RequestParam("id")String id, @RequestParam("name")String name, @RequestParam("pw")String pw) {
 		System.out.println("Insert! id = "+id );
 		memberService.insertMember(id,name,pw);
@@ -137,7 +140,7 @@ public class MainController {
 		}	
 	}
 	
-	@RequestMapping("logOut")
+	@RequestMapping("/logOut")
 	public String logOut(HttpServletRequest request) {
 		HttpSession session= request.getSession();
 		session.removeAttribute("userID");
@@ -151,7 +154,9 @@ public class MainController {
 		return "member/signUp";
 	}
 	@RequestMapping("/myPage")
-	public String myPage() {
+	public String myPage(Model model,HttpServletRequest request) {
+		model.addAttribute("googleAccountID",googleService.getAccountID(request.getSession().getAttribute("userID").toString()));
+		model.addAttribute("authorities_gogl",null);
 		
 		return "member/myPage";
 	}

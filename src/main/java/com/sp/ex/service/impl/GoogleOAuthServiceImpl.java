@@ -15,12 +15,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.sp.ex.dto.GoogleAccountDTO;
+import com.sp.ex.mapper.GoogleMapper;
 import com.sp.ex.service.*;
 
 @Service
 public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 
+	@Autowired
+	GoogleMapper googleMapper;
 	@Override
 	public String getClientID() {
 
@@ -86,6 +92,20 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 		}
 		System.out.println("rescode = " + resCode);
 		return null;
+	}
+
+	@Override
+	public List<String> getServices() {
+		List<String> services=null;
+		
+		return null;
+	}
+
+	@Override
+	public String getAccountID(String userID) {
+		System.out.println("user id = "+userID);
+
+		return googleMapper.getAccountInfo(userID).getAccount_ID();
 	}
 
 }

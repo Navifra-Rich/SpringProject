@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,11 +19,29 @@
 		<div class="top">
 			<a href="#">홈</a>
 		</div>
+		oijm
 		<div class="myNav"></div>
 	</div>
 	<div class="container">
-	<div class="column"></div>
-	<div class="column"></div>
+		<div class="column">
+			기본설정<br />
+			<button class="btn btn-default">수정</button>
+		</div>
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column">
+			구글 연동 설정<br /> 계정 이름 : ${googleAccountID}<br />
+			<button class="btn btn-default">변경</button>
+			권한:
+			<c:forEach items="${authorities_gogl}" var="auth">
+				<br />
+			</c:forEach>
+		</div>
+		<div class="column">
+			카카오톡 연동<br />
+			<button class="btn btn-default">수정</button>
+		</div>
+
 	</div>
 </body>
 </html>

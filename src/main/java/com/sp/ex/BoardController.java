@@ -36,7 +36,7 @@ public class BoardController {
 	
 	@Autowired
 	private EventService eventService;
-
+	
 	@RequestMapping("/writeForm")
 	public String wirteForm(HttpServletRequest request) {
 		//HttpSession session = request.getSession();
@@ -152,13 +152,6 @@ public class BoardController {
 			model.addAttribute("viewAll", boardService.getPostList(pageDTO));
 			model.addAttribute("searchQuery", searchContent);
 		}
-		// ---------------------------------------------------게시글 목록
-		// 불러오기-------------------------
-		/*
-		 * PagingDTO pageDTO = new PagingDTO(); pageDTO.setPageInfo(setPage,
-		 * boardService.getPostCount()); model.addAttribute("page",pageDTO);
-		 * model.addAttribute("viewAll",boardService.getPostList(pageDTO));
-		 */
 
 		return "board/boardMain";
 	}

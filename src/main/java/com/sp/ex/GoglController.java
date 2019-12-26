@@ -31,6 +31,7 @@ public class GoglController {
 
 	@Autowired
 	GoogleOAuthService goglOauthService;
+	/*
 	@RequestMapping("/getCode")
 	public String getToken(HttpServletResponse response) throws Exception {
 		String path=goglOauthService.getCodeURL();
@@ -47,4 +48,5 @@ public class GoglController {
 		
 		return "";
 	}
+	*/
 }
