@@ -8,4 +8,7 @@
 	<select id="getAccountInfo" resultType="com.sp.ex.dto.GoogleAccountDTO">
 		select * from google_token where user_id = #{userID}
 	</select>
+	<insert id="insertToken" >
+		insert into google_token values(#{user_ID},#{Access_Token},#{Refresh_Token}, 'temp')
+	</insert>
   </mapper>

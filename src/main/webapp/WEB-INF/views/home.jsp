@@ -21,6 +21,7 @@
 		<div class="header">
 			<div class="goHomeLogo">
 				GO<br />HOME
+				<button type="button" onClick="temp()">abc</button>
 			</div>
 			<div class="headLogo">head Logo~</div>
 			<div class="search_navbar"></div>
@@ -118,6 +119,9 @@
 		}
 		function logout(){
 			location.href="/ex/Main/logOut";
+		}
+		function temp(){
+			location.href="/ex/Gogl/temp";
 		}
 	</script>
 </body>

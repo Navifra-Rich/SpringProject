@@ -17,7 +17,7 @@
 <body>
 	<div class="header">
 		<div class="top">
-			<a href="#">홈</a>
+			<a href="ex/main/home">홈</a>
 		</div>
 		oijm
 		<div class="myNav"></div>

@@ -160,4 +160,9 @@ public class MainController {
 		
 		return "member/myPage";
 	}
+	@RequestMapping("/redirectPage")
+	public String redirectPage(String request){
+		
+		return "redirect:/"+request;
+	}
 }

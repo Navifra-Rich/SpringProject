@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sp.ex.dto.*;
+import com.sp.ex.dto.FileDTO;
+import com.sp.ex.dto.PagingDTO;
+import com.sp.ex.dto.postDTO;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.CommentService;
 import com.sp.ex.service.EventService;
+import com.sp.ex.service.GoogleOAuthService;
 
 @Controller
 @RequestMapping("/Board")
@@ -36,6 +39,9 @@ public class BoardController {
 	
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired
+	private GoogleOAuthService googleService;
 	
 	@RequestMapping("/writeForm")
 	public String wirteForm(HttpServletRequest request) {
@@ -107,8 +113,8 @@ public class BoardController {
 	public String selectPost(@RequestParam int idx, Model model) {
 		System.out.println("---------------in selectPost---------------");
 		System.out.println("idx = " + idx);
-		
-		
+		boardService.getPostInfo(idx, model);
+		/*
 		model.addAttribute("selectedPost", boardService.showPost(idx));
 		System.out.println("selected index = " + idx);
 
@@ -125,7 +131,7 @@ public class BoardController {
 		// ---------------------------------------------------댓글 목록
 		// 불러오기-------------------------
 		model.addAttribute("comments", commentService.getCommentList(idx));
-
+*/
 		return "board/boardPost";
 	}
 
@@ -134,24 +140,7 @@ public class BoardController {
 			@RequestParam(required = false, defaultValue = "") String searchContent) {
 
 		System.out.println("in getBoardList");
-
-		if (searchContent.equals("null") || searchContent.equals("")) {
-			System.out.println("검색 내용 없음");
-
-			PagingDTO pageDTO = new PagingDTO();
-			pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
-			model.addAttribute("page", pageDTO);
-			model.addAttribute("viewAll", boardService.getPostList(pageDTO));
-
-		} else {
-			System.out.println("검색 내용 = " + searchContent);
-
-			PagingDTO pageDTO = new PagingDTO();
-			pageDTO.setPageInfo(setPage, boardService.getPostCount(), searchContent);
-			model.addAttribute("page", pageDTO);
-			model.addAttribute("viewAll", boardService.getPostList(pageDTO));
-			model.addAttribute("searchQuery", searchContent);
-		}
+		boardService.setBoardPage(searchContent, model, setPage);
 
 		return "board/boardMain";
 	}
@@ -160,8 +149,6 @@ public class BoardController {
 	public String addComment(Model model, @RequestParam("id") String id, @RequestParam("postNum") String boardNum,
 			@RequestParam("content") String content) {
 		System.out.println("in addComment");
-		// CommentDTO dto=new CommentDTO(id,boardNum,content,"1");
-		// boardService.createComment(dto);
 
 		return "board/boardPost";
 	}
@@ -172,11 +159,21 @@ public class BoardController {
 		return "board/boardMain";
 	}
 	@RequestMapping(value="/attend")
-	public void attend(
+	public String attend(
 			@RequestParam("postID")String postID,
 			HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		String userID = request.getSession().getAttribute("userID").toString();
-		eventService.attendEvent(postID, userID);
+		
+		//-------------------데이터베이스에 참가자 추가--------------
+		//eventService.attendEvent(postID, userID);
+		//-------------------구글 캘린더 연동을 위한 토큰 얻음--------------
+			//if 엑세스 토큰이 존재한다면 
+			//else if 리프레쉬 토큰이 존재한다면
+			//else (엑세스, 리프레쉬토큰 둘다 없는 경우)
+		String codePath=googleService.getCodeURL();
+		System.out.println("path = "+codePath);
+		return "redirect:"+codePath;
+	
 	}
 }

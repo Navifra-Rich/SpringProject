@@ -14,4 +14,5 @@ public interface OAuthService {
 	public String getCodeURL();					//code 반환
 	public String getToken(HttpServletRequest request)throws Exception;	//token 반환
 	public List<String> getServices();			//제공하고있는 서비스 권한 목록을 반환
+	String getAccessToken(String userID);
 }

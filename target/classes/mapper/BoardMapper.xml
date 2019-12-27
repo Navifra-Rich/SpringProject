@@ -35,7 +35,7 @@
 
 
 
-	<select id="getCommentList" parameterType="int">
+	<select id="getCommentList" parameterType="int" resultType="com.sp.ex.dto.CommentDTO">
 		select * from
 		board_comment where postNum=#{postNum}
 	</select>
