@@ -1,0 +1,39 @@
+package com.sp.ex.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sp.ex.dto.MeetingDTO;
+import com.sp.ex.mapper.MeetingMapper;
+import com.sp.ex.service.MeetingService;
+
+@Service
+public class MeetingServiceImpl implements MeetingService{
+	
+	@Autowired
+	MeetingMapper meetingMapper;
+	
+	@Override
+	public void createMeeting(MeetingDTO dto) {
+		
+		meetingMapper.createMeeting(dto);
+	}
+	@Override
+	public MeetingDTO getMeetingInfo(int post_ID) {
+		return meetingMapper.getMeetingInfo(post_ID);
+	}
+	@Override
+	public void addMember(String post_ID, String user_ID) {
+		System.out.println("IN ADDMEMBER post id = "+post_ID+" user_ID = "+user_ID);
+		meetingMapper.addMember(post_ID, user_ID);
+	}
+	@Override
+	public void addCurAttendeeNum(String post_ID) {
+		meetingMapper.reCounnting(1, post_ID);
+	}
+	@Override
+	public Object isAttended(String post_ID, String user_ID) {
+		if(meetingMapper.isAttended(post_ID, user_ID)!=null) return null;
+		else return "";
+	}
+}

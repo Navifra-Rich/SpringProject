@@ -7,7 +7,7 @@ public class PagingDTO {
 	private int endPage;			//현재 마지막페이지
 	private int postCount;			//전체 포스트 개수
 	private int pageCount;			//전체 페이지 개수
-	private int listSize = 5;		//한 페이지당 포스트 개수
+	private int listSize = 15;		//한 페이지당 포스트 개수
 	private boolean prev=true;		//이전 페이지 있는가
 	private boolean next=true;		//다음 페이지 있는가
 	private int startPost=1;		//이 페이지의 시작 포스트 번호

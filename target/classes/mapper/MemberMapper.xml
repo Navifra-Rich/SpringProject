@@ -13,7 +13,7 @@
 	Insert into userlist(id, name,password) values(#{id}, #{name}, #{password})
 	</insert>
 	
-	<select id = "checkID" resultType="com.sp.ex.dto.MemberDTO">
-	Select * from userlist where id=#{id}
+	<select id="getUserInfo" resultType="com.sp.ex.dto.MemberDTO">
+	select * from userlist where id=#{id}
 	</select>
 </mapper>

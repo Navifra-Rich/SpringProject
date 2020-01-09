@@ -3,84 +3,73 @@ head, body{
 	width:100%;
 	height:100%;
 }
-.myhead {
-	display:block;
-	margin: 0;
-	width: 100%;
-	height: 150px;
-	background-color: black;
-}
 
-.mymiddle {
-	display: inline-block;
-	height: 500px;
-	position:relative;
-	width:100%;
-}
-
-.mycontent {
-	display: inline-block;
-	position: absolute;
-	left: 10%;
-	height: 100%;
-	background-color: green;
-	width: 100%;
-}
-
-.myleft {
-	display: inline-block;
-	margin: 0;
-	width: 10%;
-	height: 500px;
-	background-color: red;
-}
-
-.myright {
-	display: inline-block;
-	margin: 0;
-	width: 10%;
-	height: 100%;
-	width: 10%;
-}
 .container_main{
 	width:100%;
 	height:800px;
-	background-color:black;
-	padding:50px;
-	display:inline-block;
+	padding:30px;
+	display:block;
 }
 .column_left{
 	float:left;
-	width:70%;
-	height: 500px;
-	background-color:green;
+	width:60%;
+	height: auto;
 }
 .column_right{
 	float:right;
-	width:30%;
-	height: 500px;
-	background-color:red;
+	width:40%;
+	height: auto;
+}
+.column_leftTop{
+	float: right;
+	width: 700px;
+	height:260px;
+	position:relative;
+}
+.column_leftBottom{
+	float: right;
+	width: 700px;
+	height:60%;
+	position:relative;
 }
 .column_rightTop{
+	float: left;
 	position:relative;
-	height:50%;
+	width: 350px;
+	height:60%;
+}
+.column_rightBottom{
+	float: left;
+	position:relative;
+	width: 350px;
+	height:60%;
 }
 .loginBox{
+	border: solid;
 	display:block;
 	padding:5px;
 	position:absolute;
 	width:90%;
 	height:90%;
-	background-color:blue;
 	top:50%;
 	left:50%;
 	transform:translate(-50%,-50%);
+	text-align: center;
 }
 .section_navbar{
 	margin:auto;
 	height:30px;
 	width:90%;
-	background-color:beige;
+}
+.contents_outter{
+	display:block;
+	padding:5px;
+	position:absolute;
+	width:90%;
+	height:90%;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
 }
 .goHomeLogo{
 	width:130px;
@@ -93,7 +82,6 @@ head, body{
 }
 .headLogo{
 	margin:auto;
-	background-color:yellow;
 	width:85%;
 	height:130px;
 	position:relative;
@@ -105,4 +93,23 @@ head, body{
 .header{
 	width:100%;
 	height:220px;
+}
+.login_left{
+	width:70%;
+	display:inline-block;
+}
+.login_right{
+	width:20%;
+	display:inline-block;
+}
+.hitContents{
+	float: right;
+	width:600px;
+	height:auto;
+}
+.hit_content{
+	float:right;
+	height:130px;
+	width:120px;
+	display:inline-block;
 }

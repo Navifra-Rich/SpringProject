@@ -8,12 +8,25 @@ public class postDTO {
 	String time;
 	int comCount;
 	
-	String day;
+	String startDay;
+	String endDay;
 	String startTime;
 	String endTime;
 	
-	public postDTO(int num, String author, String title, String content, String time, int comCount, String day,
-			String startTime, String endTime) {
+	String location;
+	String category;
+	
+
+	
+	@Override
+	public String toString() {
+		return "postDTO [num=" + num + ", author=" + author + ", title=" + title + ", content=" + content + ", time="
+				+ time + ", comCount=" + comCount + ", startDay=" + startDay + ", endDay=" + endDay + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", location=" + location + ", category=" + category + "]";
+	}
+
+	public postDTO(int num, String author, String title, String content, String time, int comCount, String startDay,
+			String endDay, String startTime, String endTime, String location, String category) {
 		super();
 		this.num = num;
 		this.author = author;
@@ -21,9 +34,23 @@ public class postDTO {
 		this.content = content;
 		this.time = time;
 		this.comCount = comCount;
-		this.day = day;
+		this.startDay = startDay;
+		this.endDay = endDay;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.location = location;
+		this.category = category;
+	}
+	public postDTO(int num, String author, String title, String content, String time, int comCount,String location, String category) {
+		super();
+		this.num=num;
+		this.author = author;
+		this.title = title;
+		this.content = content;
+		this.time = time;
+		this.comCount=comCount;
+		this.location=location;
+		this.category=category;
 	}
 	public postDTO(int num, String author, String title, String content, String time, int comCount) {
 		super();
@@ -34,27 +61,33 @@ public class postDTO {
 		this.time = time;
 		this.comCount=comCount;
 	}
-	public postDTO(int num, String author, String title, String content, String time) {
+	public postDTO(String userID) {
 		super();
-		this.num=num;
-		this.author = author;
-		this.title = title;
-		this.content = content;
-		this.time = time;
+		this.author=userID;
 	}
-	public postDTO( String author, String title, String content, String time) {
-		super();
-		this.author = author;
-		this.title = title;
-		this.content = content;
-		this.time = time;
+	public String getLocation() {
+		return location;
 	}
-	
-	public String getDay() {
-		return day;
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	public void setDay(String day) {
-		this.day = day;
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getStartDay() {
+		return startDay;
+	}
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+	public String getEndDay() {
+		return endDay;
+	}
+	public void setEndDay(String endDay) {
+		this.endDay = endDay;
 	}
 	public String getStartTime() {
 		return startTime;

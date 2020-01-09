@@ -27,7 +27,21 @@
 			기본설정<br />
 			<button class="btn btn-default">수정</button>
 		</div>
-		<div class="column"></div>
+		<div class="column">
+			개인정보 설정<br/>
+			<% if(request.getAttribute("location")!=null){%>
+			지역 : ${location}<br/>
+			<%}else{ %>
+			지역이 설정되지 않았습니다.<button class="btn btn-default">설정하기</button><br/>
+			<%} %>
+			<% if(request.getAttribute("category")!=null){%>
+			관심사 : ${category}<br/>
+			<%}else{ %>
+			관심사가 설정되지 않았습니다.<button class="btn btn-default">설정하기</button><br/>
+			<%} %>
+			관심 카테고리 : ${category}<br/>
+			<button class="btn btn-default">수정</button>
+		</div>
 		<div class="column"></div>
 		<div class="column">
 			구글 연동 설정<br /> 계정 이름 : ${googleAccountID}<br />

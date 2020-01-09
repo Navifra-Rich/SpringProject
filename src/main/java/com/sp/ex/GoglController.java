@@ -50,8 +50,10 @@ public class GoglController {
 	@RequestMapping("/getCodePage")
 	public String getCodePage(HttpServletRequest request,Model model) throws Exception {
 		goglOauthService.getToken(request);
-		boardService.setBoardPage("null", model, 1);
-		return "/board/boardMain";
+		//boardService.setBoardPage("null", model, 1);
+		model.addAttribute("header_Contents","연동이 완료되었습니다.");
+		model.addAttribute("body_Contents","<button type='button' onclick='window.close()'>닫기</button>");
+		return "/PopUp/popUpStamp";
 	}
 	@RequestMapping("/getTokenPage")
 	public String getTokenPage() {
@@ -59,9 +61,20 @@ public class GoglController {
 		return "";
 	}
 	@RequestMapping("/temp")
-	public String temp() throws Exception {
-		googleCalendarService.temp();
+	public String temp(HttpServletRequest request) throws Exception {
+		googleCalendarService.temp(request);
 		return "";
 	}
 	
+	
+	
+	@RequestMapping("/addEventToCalendar")
+	public String addEventToCalendar(Model model,HttpServletRequest request) throws Exception {
+		String cal_ID=request.getParameter("calendar_ID");
+		String user_ID = request.getSession().getAttribute("userID").toString();
+		googleCalendarService.addEvent(cal_ID, user_ID,request);
+		model.addAttribute("header_contents","이벤트 추가 완료");
+		model.addAttribute("body_Contents","<button type='button' onclick='window.close()'>닫기</button>");
+		return "/PopUp/popUpStamp";
+	}
 }

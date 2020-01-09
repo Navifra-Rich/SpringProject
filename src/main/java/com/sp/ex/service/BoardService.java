@@ -13,7 +13,6 @@ public interface BoardService {
 		public void setBoardPage(String searchContent, Model model, int culPage);
 	
 		public void createPost(postDTO dto);
-		public void createPost2(postDTO dto,Map<String, Object> map);
 		public void createComment(CommentDTO dto);
 		public List<postDTO> viewAll();
 		public postDTO showPost(int idx);
@@ -26,9 +25,17 @@ public interface BoardService {
 		
 		public void writeFilePath(List<FileDTO> fileDTO);
 		//public void writeFilePath(Map<String, String> filePath);
-		public int getPostIDbyUser(String userID);
+		public String getPostIDbyUser(String userID);
 
 		void getPostInfo(int idx, Model model);
+
+		List<IDNameDTO> getLocations();
+
+		List<IDNameDTO> getCategories();
+
+		List<postDTO> getHitPost();
+
+		int getLastPostNum();
 
 
 	

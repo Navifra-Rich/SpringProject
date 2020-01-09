@@ -10,6 +10,7 @@ import com.sp.ex.dto.CommentDTO;
 import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.dto.postDTO;
 import com.sp.ex.dto.FileDTO;
+import com.sp.ex.dto.IDNameDTO;
 import com.sp.ex.mapper.BoardMapper;
 import com.sp.ex.service.*;
 
@@ -19,18 +20,16 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardMapper mapper;
 	
-	
+	@Override
+	public int getLastPostNum() {
+		
+		return mapper.getLastPostNum();
+	}
 	@Override
 	public void createPost(postDTO dto) {
-		System.out.println("in boardServiceImpl");
+		System.out.println("post num = "+dto.getNum());
 		mapper.createPost(dto);
-	}
-	@Override
-	public void createPost2(postDTO dto, Map<String, Object> map) {
-		System.out.println("in createPost2");
-		
-		mapper.createPost(dto);
-	}
+	}	
 
 	@Override
 	public List<postDTO> viewAll() {
@@ -41,15 +40,12 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public postDTO showPost(int idx) {
-		
-		
 		return mapper.showPost(idx);
 	}
 
 
 	@Override
 	public int getPostCount() {
-		
 		return mapper.getPostCount();
 	}
 
@@ -84,17 +80,18 @@ public class BoardServiceImpl implements BoardService{
 		}
 		
 	}
-	/*
 	@Override
-	public void writeFilePath(Map<String, String> filePath) {
-		
-		for(Map.Entry<String, String> entry : filePath.entrySet()) {
-			System.out.println("key = "+entry.getKey()+" value = "+entry.getValue());
-			mapper.writeFilePath(entry.getKey(), entry.getValue());
-		}
-	}*/
+	public List<IDNameDTO> getLocations() {
+		List<IDNameDTO> dto = mapper.getLocationList();
+		return dto;
+	}
 	@Override
-	public int getPostIDbyUser(String userID) {
+	public List<IDNameDTO> getCategories() {
+		List<IDNameDTO> dto = mapper.getCategoryList();
+		return dto;
+	}
+	@Override
+	public String getPostIDbyUser(String userID) {
 		return mapper.getPostIDbyUser(userID);
 	}
 	@Override
@@ -112,7 +109,13 @@ public class BoardServiceImpl implements BoardService{
 			pageDTO.setPageInfo(culPage, getPostCount(), null);
 			model.addAttribute("page", pageDTO);
 			model.addAttribute("viewAll", getPostList(pageDTO));
-
+			List<postDTO> dto=getPostList(pageDTO);
+			
+			/*
+			for(postDTO dtos:dto) {
+				System.out.println("id "+dtos.toString());
+			}
+			 */
 		} else {
 			System.out.println("검색 내용 = " + searchContent);
 
@@ -141,5 +144,10 @@ public class BoardServiceImpl implements BoardService{
 		// ---------------------------------------------------댓글 목록
 		// 불러오기-------------------------
 		model.addAttribute("comments", getCommentList(idx));
+	}
+	@Override
+	public List<postDTO> getHitPost(){
+		List<postDTO> dto=mapper.getHitPost();
+		return dto;
 	}
 }

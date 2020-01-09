@@ -7,13 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <!-- include libraries(jQuery, bootstrap) -->
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css"
-	rel="stylesheet">
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=2">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <script
-	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <!-- include summernote css/js-->
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css"
@@ -69,6 +69,47 @@ div.right {
 	<br>
 	<br>
 	<br>
+	<div class="header">
+		<div class="goHomeLogo" onClick="goHome()">
+			GO<br />HOME
+		</div>
+		<div class="headLogo">head Logo~</div>
+		<div class="search_navbar"></div>
+
+		<div class="section_navbar">
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbardrop"
+						data-toggle="dropdown">지역으로 찾기 </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">서울</a> <a class="dropdown-item"
+								href="#">느그집</a> <a class="dropdown-item" href="#">우리집</a>
+						</div></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbardrop"
+						data-toggle="dropdown">활동으로 찾기 </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">스포츠</a> <a
+								class="dropdown-item" href="#">음악</a> <a class="dropdown-item"
+								href="#">독서</a>
+						</div></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="/ex/Board/getBoardList">전체게시판 <span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="/ex/Board/getBoardList">삐롱삐롱삐로로롱 <span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+				</ul>
+				<form class="form-inline my-2 my-md-0"
+					action="/ex/Board/getBoardList" id="searchPost" method="GET">
+					<input name="searchContent" class="form-control" type="text"
+						placeholder="Search"><input type="submit" value="검색">
+				</form>
+			</nav>
+		</div>
+	</div>
 
 	<div class="left"></div>
 	<div class="right">
@@ -76,19 +117,29 @@ div.right {
 			<form method="post" action="/ex/Board/write" id="writeform"
 				enctype="multipart/form-data">
 				<input type="text" name="title" style="width: 40%;" placeholder="제목" />
-				<br> 날짜 : <input type="date" name="date"><br> 시간 :
+				<br /> 지역<select name="loca">
+					<c:forEach var="loca" items="${locations}">
+						<option value="${loca.name}">${loca.name}
+					</c:forEach>
+				</select> <br /> 카테고리<select name="cate">
+					<c:forEach var="cate" items="${categories}">
+						<option value="${cate.name}">${cate.name}
+					</c:forEach>
+				</select> 날짜 및 시간<br /> <input type="date" name="startDay"><br>
 				<select name="startTime">
 					<c:forEach begin="0" end="23" varStatus="idx">
-					<option value="${idx.index}"/>${idx.index}
+						<option value="${idx.index}" />${idx.index}
 					</c:forEach>
-				</select>시 부터 <select name="endTime">
+				</select>시 부터 <br> <input type="date" name="endDay"><br> <select
+					name="endTime">
 					<c:forEach begin="1" end="24" varStatus="idx">
-					<option value="${idx.index}"/>${idx.index}
+						<option value="${idx.index}" />${idx.index}
 					</c:forEach>
-				</select>시 까지
+				</select>시 까지 <br> 정원<input type="text" name="max_attendee"> 명<br>
 				<textarea id="summernote" name="content"></textarea>
-				<input type="file" name="file"> <input id="subBtn"
-					type="button" value="글 작성" style="float: right;"
+				이미지첨부하기<input type="file" name="image" value="이미지 첨부"> <br />
+				파일 첨부하기<input type="file" name="file"><br /> <input
+					id="subBtn" type="button" value="글 작성" style="float: right;"
 					onclick="goWrite(this.form)" /> <input type="hidden" name="time"
 					value="111">
 			</form>
@@ -109,11 +160,7 @@ div.right {
 			}
 			frm.submit();
 		}
-		//--------------------------------------글쓰기 폼 onoff----------------------------------
-		function hideForm() {
-			//alert($('#writeform').css("display"));
-			$('#writeform').hide();
-		}
+
 		//--------------------------------------글 목록에서 글 선택----------------------------------
 		$('.title').on('click', function() {
 			var frm = $('#boardID');

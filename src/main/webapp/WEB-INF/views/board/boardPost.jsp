@@ -1,61 +1,186 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.sp.ex.dto.postDTO"%>
+<%@ page import="com.sp.ex.dto.MeetingDTO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<link rel="stylesheet" href="<c:url value='/resources/css/myCss.css'/>" />
+<link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<%
+	String userID = (String) session.getAttribute("userID");
+	MeetingDTO mDTO = (MeetingDTO) request.getAttribute("meeting");
+	int max_att = mDTO.getMax_attendee();
+	int cur_att = mDTO.getCur_attendee();
+%>
 <body>
-	<div class="myhead"></div>
-	<div class="mymiddle">
-		<div class="myleft"></div>
-		<div class="mycontent">
-			<div>
-				<span>제목 : ${selectedPost.title}</span><br /> 
-				<span>날짜 : ${selectedPost.day}</span><br />
-				<span>시간 : ${selectedPost.startTime}시 부터</span><br />
-				<span>시간 : ${selectedPost.endTime}시 까지</span><br />
-				<input type="button" value="참여하기" onClick="attend()">
-				<span>글쓴이 :
-					${selectedPost.author}</span><br /> <br /> <br /> <span>글 내용 :
-					${selectedPost.content}</span><br /> <br />
-			</div>
-			<div class="files">
-				<c:forEach var="files" items="${files}">
-					<p>첨부된 파일 =/ex/File/fileDownload?path=${files.directory}</p>
-					<input type="button" value="${files.name}"
-						onclick="downloadFile();">
-				</c:forEach>
-			</div>
-			<div class="comment">
-				댓글 쓰기<br />
-				<form class="commentForm" action="/ex/Comment/writeComment">
-					<input type="text" name="id" value="">
-					<textarea id="summernote" name="content"></textarea>
-					<input type="button" id="commentSubmit" value="쓰기"> <input
-						type="hidden" name="postNum" value="${selectedPost.num }">
-					<input type="hidden" name="curPage" value="${page.curPage }">
-				</form>	
-			</div>
-			<div class="commentList">
-			댓글 목록<br/>
-				<c:forEach var="coms" items="${comments}" varStatus="status">
-					<p>댓글 id = ${coms.id}</p>
-					<p>댓글 내용 = ${coms.content}</p>
-					<br/>
-				</c:forEach>
+	<div class="header">
+		<div class="goHomeLogo" onClick="goHome()">
+			GO<br />HOME
+		</div>
+		<div class="headLogo">head Logo~</div>
+		<div class="search_navbar"></div>
+		<div class="section_navbar">
+			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbardrop"
+						data-toggle="dropdown">지역으로 찾기 </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">서울</a> <a class="dropdown-item"
+								href="#">느그집</a> <a class="dropdown-item" href="#">우리집</a>
+						</div></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbardrop"
+						data-toggle="dropdown">활동으로 찾기 </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">스포츠</a> <a
+								class="dropdown-item" href="#">음악</a> <a class="dropdown-item"
+								href="#">독서</a>
+						</div></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="/ex/Board/getBoardList">전체게시판 <span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="/ex/Board/getBoardList">삐롱삐롱삐로로롱 <span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+				</ul>
+				<form class="form-inline my-2 my-md-0"
+					action="/ex/Board/getBoardList" id="searchPost" method="GET">
+					<input name="searchContent" class="form-control" type="text"
+						placeholder="Search"><input type="submit" value="검색">
+				</form>
+			</nav>
+		</div>
+	</div>
+
+	<div class="container_main">
+		<div class="column_left">
+			<div class="mycontent">
+				<div>
+					<p>제목 : ${selectedPost.title}</p>
+					<p>날짜 : ${selectedPost.time}</p>
+					<span>지역 : ${selectedPost.location }</span> <span>범주 :
+						${selectedPost.category}</span><br /> <span>시간
+						:${selectedPost.startDay} </span><span> ${selectedPost.startTime}시
+						부터</span>
+					<p>시간 : ${selectedPost.endDay} ${selectedPost.endTime}시 까지</p>
+					<%
+						if (max_att <= cur_att) {
+					%>
+					<p class="text-danger">${meeting.cur_attendee}/${meeting.max_attendee}
+						정원 초과!</p>
+					<%
+						} else {
+					%>
+					<span class="text-secondary">${meeting.cur_attendee}</span><span>/${meeting.max_attendee}</span>
+					<%
+						if (request.getAttribute("attended") != null) {
+					%>
+					<input type="button" value="참여하기" onClick="attend()">
+					<p>
+						<%
+							} else {
+								%>
+								<input type="button" value="참여중!" disabled="disabled"><br/>
+								<%
+								}
+							}
+						%>
+
+						글쓴이 : ${selectedPost.author}
+					</p>
+					<br /> <br />
+					<p>
+						이미지 출력 <img src="/ex/File/displayImage?postID=${selectedPost.num}"
+							style="max-width: 100%; height: auto;">
+					</p>
+					<br /> <br />
+					<p>글 내용 : ${selectedPost.content}</p>
+					<br />
+				</div>
+				<div class="files">
+					<c:forEach var="file" items="${files}">
+						<p>첨부된 파일 =/ex/File/fileDownload?path=${file.directory}</p>
+						<input type="button" value="${file.name}"
+							onclick="downloadFile();">
+					</c:forEach>
+				</div>
+				<div class="comment">
+					댓글 쓰기<br />
+					<form class="commentForm" action="/ex/Comment/writeComment">
+						<input type="hidden" name="id" value="<%=userID%>">
+						<textarea id="summernote" name="content"></textarea>
+						<input type="button" id="commentSubmit" value="쓰기"> <input
+							type="hidden" name="postNum" value="${selectedPost.num }">
+						<input type="hidden" name="curPage" value="${page.curPage }">
+					</form>
+				</div>
+				<div class="commentList">
+					댓글 목록<br />
+					<c:forEach var="coms" items="${comments}" varStatus="status">
+						<p>댓글 id = ${coms.id}</p>
+						<p>댓글 내용 = ${coms.content}</p>
+						<br />
+					</c:forEach>
+				</div>
 			</div>
 		</div>
+		<div class="column_right" style="width: 30%">
+			<div class="column_rightTop">
+				<div class="loginBox">
+					<%
+						if (userID == null) {
+					%>
+					<form action="/ex/Main/logIn" method="POST" class="form">
+						<div class="login_left">
+							<div class="col-md-12">
+								<label for="inputID"></label> <input name="id" type="text"
+									id="inputID"
+									class="form-control form-control-sm bg-secondary text-white-50">
+							</div>
 
+							<div class="col-md-12">
+								<label for="inputPassowrd"></label> <input name="pw"
+									type="password" id="inputPassword"
+									class="form-control form-control-sm bg-secondary text-white-50">
+							</div>
+						</div>
+						<div class="login_right">
+							<div class="form-group">
+								<input type="submit" class="btn btn-default bg-dark text-white"
+									value="전송">
+							</div>
+						</div>
+					</form>
+					<%
+						} else {
+					%>
+					<%=userID%>님 로그인 됨
+					<div>
+						<button type="submit" class="btn btn-default" onClick="logout()">로그아웃</button>
+						<button type="submit" class="btn btn-default"
+							onClick="mypageClick()">마이페이지</button>
+					</div>
+					<%
+						}
+					%>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="left"></div>
+
 	<div class="content">
 		<form action="/ex/Board/selectPost" method="GET" id="selectPost">
 		</form>
@@ -91,7 +216,7 @@
 		</c:forEach>
 	</div>
 	<script>
-	var postID="${selectedPost.num}";
+		var postID = "${selectedPost.num}";
 		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
@@ -113,10 +238,32 @@
 			alert(temp);
 			location.href = url;
 		}
-		function attend(){
+		function attend() {
 			alert("${selectedPost.num}");
-			location.href="/ex/Board/attend?postID="+postID;
+	<%//------------------------------리펙토링 필요 -> 보드 controller에서 애초에 뷰를 리턴할 때 세션 설정하기------------- 
+			postDTO dto = (postDTO) request.getAttribute("selectedPost");
+			session.setAttribute("startTime", dto.getStartTime());
+			session.setAttribute("endTime", dto.getEndTime());
+			session.setAttribute("startDay", dto.getStartDay());
+			session.setAttribute("endDay", dto.getEndDay());%>
+		//window.open("/ex/Board/attend?postID="+postID);
+			var left = window.screen.width / 2 - 400;
+			var top = window.screen.height / 2 - 300;
+			window
+					.open(
+							"/ex/Meeting/attendPopUp?post_ID="
+									+
+	<%=dto.getNum()%>
+		,
+							"attend",
+							'fullscreen=no, width=800 height=600 scrollbars=no, location=no, resizable=no, left='
+									+ left + ', top=' + top);
 		}
 	</script>
+	<%
+		request.setAttribute("startTime", "abcd123");
+		request.setAttribute("endTime", "${selectedPost.endDay}");
+		// 		<span>시간 : ${selectedPost.endDay} ${selectedPost.endTime}시 까지
+	%>
 </body>
 </html>

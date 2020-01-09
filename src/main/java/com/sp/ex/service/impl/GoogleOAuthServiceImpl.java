@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
@@ -34,7 +35,7 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 	@Override
 	public String getClientSecret() {
 		// TODO Auto-generated method stub
-		return null;
+		return "E6alvBW5f0G9YBSuBo_oTWbk";
 	}
 
 	@Override
@@ -98,19 +99,26 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 		if (jsonObj.get("refresh_token") != null)
 			dto.setRefresh_Token(jsonObj.get("refresh_token").toString());
 		dto.setUser_ID((String) request.getSession().getAttribute("userID"));
-		// System.out.println("id = "+dto.getUser_ID());
-		// System.out.println("ac token = "+obj.get("access_token"));
-		// System.out.println("id = "+dto.getRefresh_Token());
-
 		googleMapper.insertToken(dto);
 
 		return null;
 	}
 
 	@Override
-	public String getAccessToken(String userID) {
-		
-		return googleMapper.getAccountInfo(userID).getAccess_token();
+	public String getAccessToken(String userID) throws Exception {
+		if (googleMapper.getAccountInfo(userID) != null) {
+			
+			return RefreshToken(userID);
+		} else
+			return null;
+	}
+
+	@Override
+	public String getRefreshToken(String userID) {
+		String refreshToken = null;
+		if (googleMapper.getAccountInfo(userID) != null)
+			refreshToken = googleMapper.getAccountInfo(userID).getRefresh_token();
+		return refreshToken;
 	}
 
 	@Override
@@ -123,8 +131,60 @@ public class GoogleOAuthServiceImpl implements GoogleOAuthService {
 	@Override
 	public String getAccountID(String userID) {
 		System.out.println("user id = " + userID);
-
-		return googleMapper.getAccountInfo(userID).getAccount_ID();
+		if (googleMapper.getAccountInfo(userID) != null)
+			return googleMapper.getAccountInfo(userID).getAccount_ID();
+		else {
+			return "없음";
+		}
 	}
 
+	@Override
+	public String RefreshToken(String userID) throws Exception {
+		System.out.println("----------------------토큰 활성화 진행중---------------------");
+		String path = "https://www.googleapis.com/oauth2/v4/token";
+		URL url = new URL(path);
+		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+		con.setDoOutput(true);
+		con.setRequestMethod("POST");
+		String param = "client_id=" + getClientID() + "&client_secret=" + getClientSecret() + "&refresh_token="
+				+ getRefreshToken(userID) + "&grant_type=refresh_token";
+		byte[] bt = param.getBytes();
+		OutputStream outStream = con.getOutputStream();
+		outStream.write(bt);
+		outStream.close();
+		int responseCode = con.getResponseCode();
+		String line = "";
+		String str = "";
+
+		if (con.getErrorStream() != null) {
+			BufferedReader errorReader = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			System.out.println("error");
+			while ((line = errorReader.readLine()) != null) {
+				System.out.println(line);
+			}
+			// 토큰 삭제 절차 ㄱㄱ
+			System.out.println("토큰 삭제하게쓰");
+			googleMapper.deleteToken(userID);
+			return "";
+		} else {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			while ((line = rd.readLine()) != null) {
+				str += line;
+			}
+			System.out.println("str = " + str);
+			JSONParser parser = new JSONParser();
+			JSONObject obj = (JSONObject) parser.parse(str);
+			System.out.println("user id = " + userID);
+			updateAccess_Token(userID, obj.get("access_token").toString());
+			return  obj.get("access_token").toString();
+		}
+	}
+
+	public void updateAccess_Token(String userID, String access_Token) {
+		TokenDTO dto = new TokenDTO();
+		dto.setUser_ID(userID);
+		dto.setAccess_Token(access_Token);
+		googleMapper.updateToken(dto);
+		return;
+	}
 }

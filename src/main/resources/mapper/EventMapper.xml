@@ -6,6 +6,6 @@
     
 <mapper namespace="com.sp.ex.mapper.EventMapper">
 	<insert id="attendEvent" parameterType="String">
-	insert into attendee values(#{postID},#{userID})
+		insert into attendee values(#{postID},#{userID})
 	</insert>
 </mapper>

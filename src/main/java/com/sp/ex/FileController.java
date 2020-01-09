@@ -7,12 +7,20 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.sp.ex.service.FileService;
 
 @Controller
 @RequestMapping("/File")
 public class FileController {
+	
+	@Autowired
+	FileService fileService;
 	@RequestMapping("/fileDownload")
 	public void fileDownload(@Param("path") String path, HttpServletResponse response) throws Exception {
 		
@@ -30,5 +38,10 @@ public class FileController {
 
 		response.flushBuffer();
 		fileIn.close();
+	}
+	@RequestMapping(value="/displayImage")
+	public void displayImage(@RequestParam("postID")String postID, HttpServletResponse res) throws Exception{
+		System.out.println("postID= "+postID);
+		fileService.displayImage(postID, res);
 	}
 }
