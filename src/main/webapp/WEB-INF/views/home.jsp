@@ -161,7 +161,7 @@
 								<c:forEach var="con" items="${viewAll}">
 									<tr>
 										<td>[${con.location}][${con.category}]</td>
-										<td>[${con.title}]</td>
+										<td>${con.title}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

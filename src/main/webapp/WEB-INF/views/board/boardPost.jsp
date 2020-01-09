@@ -3,7 +3,7 @@
 <%@ page import="com.sp.ex.dto.postDTO"%>
 <%@ page import="com.sp.ex.dto.MeetingDTO"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,7 @@
 </head>
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=1">
+<link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=210">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <script
@@ -67,15 +67,16 @@
 
 	<div class="container_main">
 		<div class="column_left">
-			<div class="mycontent">
+			<div class="mycontent" style="float: right;">
 				<div>
-					<p>제목 : ${selectedPost.title}</p>
+					<span>제목 : ${selectedPost.title} // 글쓴이 :
+						${selectedPost.author}</span>
 					<p>날짜 : ${selectedPost.time}</p>
 					<span>지역 : ${selectedPost.location }</span> <span>범주 :
 						${selectedPost.category}</span><br /> <span>시간
 						:${selectedPost.startDay} </span><span> ${selectedPost.startTime}시
-						부터</span>
-					<p>시간 : ${selectedPost.endDay} ${selectedPost.endTime}시 까지</p>
+						부터 ${selectedPost.endDay} ${selectedPost.endTime}시 까지</span>
+
 					<%
 						if (max_att <= cur_att) {
 					%>
@@ -92,14 +93,14 @@
 					<p>
 						<%
 							} else {
-								%>
-								<input type="button" value="참여중!" disabled="disabled"><br/>
-								<%
-								}
+						%>
+						<input type="button" value="참여중!" disabled="disabled"><br />
+						<%
+							}
 							}
 						%>
 
-						글쓴이 : ${selectedPost.author}
+
 					</p>
 					<br /> <br />
 					<p>
@@ -118,22 +119,32 @@
 					</c:forEach>
 				</div>
 				<div class="comment">
-					댓글 쓰기<br />
 					<form class="commentForm" action="/ex/Comment/writeComment">
 						<input type="hidden" name="id" value="<%=userID%>">
-						<textarea id="summernote" name="content"></textarea>
-						<input type="button" id="commentSubmit" value="쓰기"> <input
+						<textarea name="content" placeholder="댓글 쓰기"
+							style="width: 650px; height: 80px;"></textarea>
+						<input type="button" id="commentSubmit" value="등록"> <input
 							type="hidden" name="postNum" value="${selectedPost.num }">
 						<input type="hidden" name="curPage" value="${page.curPage }">
 					</form>
 				</div>
 				<div class="commentList">
-					댓글 목록<br />
-					<c:forEach var="coms" items="${comments}" varStatus="status">
-						<p>댓글 id = ${coms.id}</p>
-						<p>댓글 내용 = ${coms.content}</p>
-						<br />
-					</c:forEach>
+					<table class="table table-secondary table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>댓글 ${fn:length(comments)}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="coms" items="${comments}" varStatus="status">
+								<tr>
+									<td>id = ${coms.id}</td>
+									<td>${coms.content}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -143,7 +154,7 @@
 					<%
 						if (userID == null) {
 					%>
-					<form action="/ex/Main/logIn" method="POST" class="form">
+					<form action="Main/logIn" method="POST" class="form">
 						<div class="login_left">
 							<div class="col-md-12">
 								<label for="inputID"></label> <input name="id" type="text"
@@ -167,11 +178,25 @@
 					<%
 						} else {
 					%>
-					<%=userID%>님 로그인 됨
-					<div>
-						<button type="submit" class="btn btn-default" onClick="logout()">로그아웃</button>
-						<button type="submit" class="btn btn-default"
-							onClick="mypageClick()">마이페이지</button>
+					<div style="text-align: center; display: inline-block; width: 80%;">
+						<div>
+							<div class="border">
+								<img src="#" style="min-width: 90px; min-height: 90px;">
+								<%=userID%>님 로그인 됨
+								<button type="submit" class="btn btn-default" onClick="logout()">로그아웃</button>
+								<button type="submit" class="btn btn-default"
+									onClick="mypageClick()">마이페이지</button>
+							</div>
+							<div class="row m-0">
+								<div class="col-3 border p-2 bg-secondary">알람</div>
+								<div class="col-3 border p-2 bg-secondary">쪽지</div>
+								<div class="col-3 border p-2 bg-secondary"
+									onClick="getMeetingList()">모임</div>
+								<div class="col-3 border p-2 bg-secondary">삐롱</div>
+							</div>
+
+
+						</div>
 					</div>
 					<%
 						}

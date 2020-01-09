@@ -5,9 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.sp.ex.dto.*;
+
+import com.sp.ex.dto.CommentDTO;
+import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.CommentService;
+import com.sp.ex.service.MeetingService;
 
 @Controller
 @RequestMapping("/Comment")
@@ -18,6 +21,9 @@ public class CommentController {
 	
 	@Autowired
 	BoardService boardService;
+	
+	@Autowired
+	MeetingService meetingService;
 	
 	@RequestMapping("/writeComment")
 	public String writeComment(
@@ -38,6 +44,7 @@ public class CommentController {
 		model.addAttribute("page",pageDTO);
 		model.addAttribute("viewAll",boardService.getPostList(pageDTO));
 		model.addAttribute("comments",commentService.getCommentList(postNum));
+		model.addAttribute("meeting", meetingService.getMeetingInfo(postNum));
 		return "board/boardPost";
 	}
 }
