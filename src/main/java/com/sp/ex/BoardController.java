@@ -129,7 +129,7 @@ public class BoardController {
 
 		System.out.println("in getBoardList");
 		boardService.setBoardPage(searchContent, model, setPage);
-
+		
 		return "board/boardMain";
 	}
 
@@ -146,7 +146,32 @@ public class BoardController {
 		System.out.println("in searchPost");
 		return "board/boardMain";
 	}
+	
+	@RequestMapping(value="getPostListByLocation")
+	public String getPostListByLocation(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
+			@RequestParam(required = false, defaultValue = "") String location) {
 
+		System.out.println("in getBoardList");
+		PagingDTO pageDTO = new PagingDTO();
+		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
+		model.addAttribute("page", pageDTO);
+		boardService.getPostListByLocation(location, pageDTO);
+		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
+		return "board/boardMain";
+	}
+	@RequestMapping(value="getPostListByCategory")
+	public String getPostListByCategory(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
+			@RequestParam(required = false, defaultValue = "") String category) {
+
+		System.out.println("in getBoardList");
+		System.out.println("in getBoardList");
+		PagingDTO pageDTO = new PagingDTO();
+		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
+		model.addAttribute("page", pageDTO);
+		boardService.getPostListByLocation(category, pageDTO);
+		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
+		return "board/boardMain";
+	}
 	/*
 	 * @RequestMapping(value = "/attend") public String attend( HttpServletRequest
 	 * request, HttpServletResponse response, Model model) throws Exception { String

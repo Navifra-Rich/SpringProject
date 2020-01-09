@@ -38,17 +38,18 @@
 							class="nav-link dropdown-toggle" href="#" id="navbardrop"
 							data-toggle="dropdown">지역으로 찾기 </a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">서울</a> <a
-									class="dropdown-item" href="#">느그집</a> <a class="dropdown-item"
-									href="#">우리집</a>
+								<c:forEach var="loca" items="${locations}">
+									<a class="dropdown-item" onClick="byLocation('${loca.name}')">${loca.name}</a>
+								</c:forEach>
 							</div></li>
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbardrop"
 							data-toggle="dropdown">활동으로 찾기 </a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">스포츠</a> <a
-									class="dropdown-item" href="#">음악</a> <a class="dropdown-item"
-									href="#">독서</a>
+								<c:forEach var="cate" items="${categories}">
+									<a class="dropdown-item"
+										href="/ex/Board/getPostListByCategory?category=${cate.name}">${cate.name}</a>
+								</c:forEach>
 							</div></li>
 						<li class="nav-item active"><a class="nav-link"
 							href="/ex/Board/getBoardList">전체게시판 <span class="sr-only">(current)</span>
@@ -139,7 +140,8 @@
 								<div class="row m-0">
 									<div class="col-3 border p-2 bg-secondary">알람</div>
 									<div class="col-3 border p-2 bg-secondary">쪽지</div>
-									<div class="col-3 border p-2 bg-secondary">모임</div>
+									<div class="col-3 border p-2 bg-secondary"
+										onClick="getMeetingList()">모임</div>
 									<div class="col-3 border p-2 bg-secondary">삐롱</div>
 								</div>
 
@@ -189,6 +191,9 @@
 	</form>
 	<form action="/ex/Board/selectPost" method="GET" id="selectPost"></form>
 	<script>
+	function byLocation(loca){
+		location.href="/ex/Board/getPostListByLocation?location="+encodeURI(loca);
+	}
 		function myFunction() {
 			//alert('!!');
 		}
@@ -228,6 +233,13 @@
 		}
 		function goHome() {
 			location.href = "/ex/";
+		}
+		function getMeetingList() {
+			var left = window.screen.width / 2 - 250;
+			var top = window.screen.height / 2 - 200;
+			window.open("/ex/Meeting/getMeetingList?userID=${userID}",
+					"meeting", "width=500, height=400, left=" + left + ", top="
+							+ top);
 		}
 	</script>
 </body>

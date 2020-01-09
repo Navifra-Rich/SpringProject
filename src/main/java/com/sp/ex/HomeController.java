@@ -36,6 +36,8 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 
 		model.addAttribute("hitContents", boardService.getHitPost());
+		model.addAttribute("locations", boardService.getLocations());
+		model.addAttribute("categories", boardService.getCategories());
 		boardService.setBoardPage("", model, 1);
 		return "home";
 	}

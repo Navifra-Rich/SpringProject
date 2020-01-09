@@ -31,4 +31,12 @@ public class MeetingController {
 		meetingService.addCurAttendeeNum(post_ID);
 		return "PopUp/attend";
 	}
+
+	@RequestMapping(value="getMeetingList")
+	public String getMeetingList(Model model, @RequestParam(value = "userID", required=false)String userID) {
+		System.out.println("userID = "+userID);
+		model.addAttribute("meetings",meetingService.getMeetingListByID(userID));
+		model.addAttribute("organizedMeetings", meetingService.getMeetingListByOrganizerID(userID));
+		return "PopUp/meeting";
+	}
 }

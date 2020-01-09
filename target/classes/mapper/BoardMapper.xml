@@ -100,4 +100,13 @@
 		RoWNUM , a.* from board a order by id DESC ) t where ROWNUM between 1
 		and 5
 	</select>
+	
+	<select id="getPostListByLocation" resultType="com.sp.ex.dto.postDTO">
+		select t.id, t.author, t.title, t.content, t.time,
+		t.comCount, t.location, t.category from (select ROWNUM as rnum, board.* from board  where location= #{location} order by board.id desc) t where rnum between #{startPost}and #{endPost}
+	</select>
+	<select id="getPostListByCategory" resultType="com.sp.ex.dto.postDTO">
+		select t.id, t.author, t.title, t.content, t.time,
+		t.comCount, t.location, t.category from (select ROWNUM as rnum, board.* from board  where category= #{category} order by board.id desc) t where rnum between #{startPost}and #{endPost}
+	</select>
 </mapper>

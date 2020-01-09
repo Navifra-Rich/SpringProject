@@ -3,24 +3,48 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sp.ex.mapper.MeetingMapper">
- 	
- 	<insert id="createMeeting">
- 		 insert into MEETING values(#{post_ID}, #{organizer_ID}, #{summary}, #{max_attendee}, 0, #{location}, #{category} )
- 	</insert>
- 	
- 	<select id="getMeetingInfo" resultType="com.sp.ex.dto.MeetingDTO" parameterType="int">
- 		select * from MEETING where post_id=#{post_ID}
- 	</select>
- 	
- 	<insert id="addMember" parameterType="String">
-		insert into attendee values(#{post_ID}, #{user_ID})
+
+	<insert id="createMeeting">
+		insert into MEETING values(#{post_ID},
+		#{organizer_ID}, #{summary},
+		#{max_attendee}, 0, #{location},
+		#{category} )
 	</insert>
-	
+
+	<select id="getMeetingInfo"
+		resultType="com.sp.ex.dto.MeetingDTO" parameterType="int">
+		select * from
+		MEETING where post_id=#{post_ID}
+	</select>
+
+	<insert id="addMember" parameterType="String">
+		insert into attendee
+		values(#{post_ID}, #{user_ID})
+	</insert>
+
 	<update id="reCounnting">
-		update MEETING set CUR_ATTENDEE=CUR_ATTENDEE+#{sum} where POST_ID=#{post_ID}
+		update MEETING set CUR_ATTENDEE=CUR_ATTENDEE+#{sum}
+		where POST_ID=#{post_ID}
 	</update>
-	
+
 	<select id="isAttended" resultType="Map">
-		select * from attendee where POST_ID=#{post_ID} and ATTENDEE_ID=#{user_ID}
+		select * from attendee where
+		POST_ID=#{post_ID} and ATTENDEE_ID=#{user_ID}
+	</select>
+	<select id="getMeetingListByID"
+		resultType="com.sp.ex.dto.MeetingDTO">
+		select * from meeting
+		where post_id in
+		(
+		select post_id
+		from
+		attendee
+		where attendee_id=#{user_ID}
+		)
+	</select>
+	<select id="getMeetingListByOrganizerID"
+		resultType="com.sp.ex.dto.MeetingDTO">
+		select * from meeting
+		where Organizer_ID =#{organizer_ID}
 	</select>
 </mapper>

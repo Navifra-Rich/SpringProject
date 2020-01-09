@@ -38,6 +38,11 @@ public interface BoardService {
 		int getLastPostNum();
 
 
+		List<postDTO> getPostListByLocation(String location, PagingDTO pageDTO);
+
+		List<postDTO> getPostListByCategory(String category, PagingDTO pageDTO);
+
+
 	
 
 

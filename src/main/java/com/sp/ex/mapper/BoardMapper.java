@@ -20,12 +20,19 @@ public interface BoardMapper {
 	public List<CommentDTO> getCommentList(int postNum);
 	public List<postDTO> getSearchedPostList(PagingDTO pageDTO);
 
+	
+	//---------------------카테고리와 지역을 불러옴
 	public List<IDNameDTO> getLocationList();
 	public List<IDNameDTO> getCategoryList();
 	
+	
+	//--------------메인화면에 쓰일 인기 포스트, 최신 포스트 목록을 몇개 추려서 반환
 	public List<postDTO> getHitPost();
 	public List<postDTO> getRecentPost();
 	
+	//---------------------카테고리에 따라 게시글을 분류해서 반환
+	public List<postDTO> getPostListByLocation(@Param("location")String location, @Param("startPost")int startPost, @Param("endPost")int endPost);
+	public List<postDTO> getPostListByCategory(@Param("category")String category, @Param("startPost")int startPost, @Param("endPost")int endPost);
 	//------------------------------첨부파일 및 이미지 처리
 	public void writeFilePath(FileDTO fileDTO);
 	public void writeImagePath(FileDTO fileDTO);

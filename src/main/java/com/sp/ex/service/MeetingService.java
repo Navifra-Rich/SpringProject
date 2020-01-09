@@ -1,5 +1,7 @@
 package com.sp.ex.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.sp.ex.dto.MeetingDTO;
@@ -16,5 +18,9 @@ public interface MeetingService {
 	void addCurAttendeeNum(String post_ID);
 
 	Object isAttended(String post_ID, String user_ID);
+
+	List<MeetingDTO> getMeetingListByID(String user_ID);
+
+	List<MeetingDTO> getMeetingListByOrganizerID(String Organier_ID);
 
 }

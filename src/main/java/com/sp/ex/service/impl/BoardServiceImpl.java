@@ -60,7 +60,14 @@ public class BoardServiceImpl implements BoardService{
 		}
 		
 	}
-
+	@Override
+	public List<postDTO> getPostListByLocation(String location, PagingDTO pageDTO){
+		return mapper.getPostListByLocation(location, pageDTO.getStartPost(), pageDTO.getEndPost());
+	}
+	@Override
+	public List<postDTO> getPostListByCategory(String category, PagingDTO pageDTO){
+		return mapper.getPostListByLocation(category, pageDTO.getStartPost(), pageDTO.getEndPost());
+	}
 
 	@Override
 	public void createComment(CommentDTO dto) {

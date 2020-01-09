@@ -1,5 +1,7 @@
 package com.sp.ex.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +37,15 @@ public class MeetingServiceImpl implements MeetingService{
 	public Object isAttended(String post_ID, String user_ID) {
 		if(meetingMapper.isAttended(post_ID, user_ID)!=null) return null;
 		else return "";
+	}
+	
+	@Override
+	public List<MeetingDTO> getMeetingListByID(String user_ID){
+		return meetingMapper.getMeetingListByID(user_ID);
+	}
+	
+	@Override
+	public List<MeetingDTO> getMeetingListByOrganizerID(String organizer_ID){
+		return meetingMapper.getMeetingListByOrganizerID(organizer_ID);
 	}
 }
