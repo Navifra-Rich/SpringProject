@@ -28,6 +28,7 @@ public class EchoHandler extends TextWebSocketHandler{
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    	System.out.println("아아아");
         //맵을 쓸때 방법
     	//sessions.put(session.getId(), session);
         //List쓸때 방법
@@ -37,7 +38,8 @@ public class EchoHandler extends TextWebSocketHandler{
         logger.info("{} 연결됨", session.getId()); 
         
         //Session값을 가지고 데이터베이스등의 작업을 하면 채팅 참여 사용자 정보 리스트를 구현할 수 있다.//
-        System.out.println("채팅방 입장자: " + session.getPrincipal().getName());
+        //System.out.println("채팅방 입장자: " + session.getPrincipal().getName());
+        return;
     }
     
     /**
@@ -45,6 +47,7 @@ public class EchoHandler extends TextWebSocketHandler{
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    	System.out.println("아아아2");
         //0번째에 session.getId() 1번째에 message.getPayload() 넣음
         logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
         //logger.info("{}로부터 {}받음", new String[]{session.getId(),message.getPayload()});
@@ -52,7 +55,7 @@ public class EchoHandler extends TextWebSocketHandler{
         //연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
         //getPrincipal()를 이용해서 세션에 물려있는 유저의 정보를 불러온다.세션의 정보는 User를 이용한것과 동일하다.//
         for(WebSocketSession sess : sessionList){
-        	sess.sendMessage(new TextMessage(session.getPrincipal().getName()+ "|" + message.getPayload()));
+        	sess.sendMessage(new TextMessage(/*session.getPrincipal().getName()*/"|" + message.getPayload()));
         }
         
         // 맵 방법.
@@ -66,6 +69,7 @@ public class EchoHandler extends TextWebSocketHandler{
         
         //연결되어 있는 모든 클라이언트들에게 메시지를 전송한다.
         //session.sendMessage(new TextMessage("echo:" + message.getPayload()));
+        return;
     }
     
     /**
@@ -73,14 +77,15 @@ public class EchoHandler extends TextWebSocketHandler{
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    	System.out.println("아아아3");
         //List 삭제
         sessionList.remove(session);
         
         //Map 삭제
         //sessions.remove(session.getId());
         logger.info("{} 연결 끊김.", session.getId());
-        
-        System.out.println("채팅방 퇴장자: " + session.getPrincipal().getName());
+        return;
+       // System.out.println("채팅방 퇴장자: " + session.getPrincipal().getName());
     }
  
 }

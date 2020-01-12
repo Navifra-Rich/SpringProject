@@ -28,6 +28,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
+		/*
 		logger.info("Welcome home! The client locale is {}.", locale);
 
 		Date date = new Date();
@@ -39,6 +40,7 @@ public class HomeController {
 		model.addAttribute("locations", boardService.getLocations());
 		model.addAttribute("categories", boardService.getCategories());
 		boardService.setBoardPage("", model, 1);
+		*/
 		return "home";
 	}
 
