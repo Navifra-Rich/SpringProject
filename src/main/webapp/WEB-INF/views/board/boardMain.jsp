@@ -70,7 +70,7 @@
 
 		<div class="container_main">
 			<div class="column_left" style="width: 70%;">
-				<div style="width: 1000px; height: 600px; float:right;">
+				<div style="width: 1000px; height: 600px; float: right;">
 					<div class="col-sm-10" style="float: right; right: 3%;">
 						<table class="table table-striped table-hover table-sm">
 							<thead>
@@ -97,7 +97,8 @@
 					</div>
 				</div>
 				<div class="" style="display: inline-block;">
-					<form action="/ex/Board/writeForm" method="POST" style="display: inline;">
+					<form action="/ex/Board/writeForm" method="POST"
+						style="display: inline;">
 						<input type="submit" value="글쓰기">
 					</form>
 					<div class="page" style="display: inline;">
@@ -117,7 +118,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="column_right" style="width: 30%; height:800px;">
+			<div class="column_right" style="width: 30%; height: 800px;">
 				<div class="column_rightTop">
 					<div class="loginBox">
 						<%

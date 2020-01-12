@@ -44,7 +44,7 @@
 								<td>${met.post_ID }</td>
 								<td>${met.summary }</td>
 								<td>${met.cur_attendee }/${met.max_attendee }
-									<button value="탈출"></button>
+									<button onClick="leave('${met.post_ID }')">나가기</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -66,7 +66,7 @@
 								<td>${met.post_ID }</td>
 								<td>${met.summary }</td>
 								<td>${met.cur_attendee }/${met.max_attendee }
-									<button value="탈출"></button>
+									<button onClick="leave('${met.post_ID }')">나가기</button>
 								</td>
 							</tr>
 						</c:forEach>
@@ -78,5 +78,9 @@
 	</div>
 </body>
 <script>
+function leave(post_ID){
+	alert('leave!');
+	location.href("/ex/Meeting/leaveMeeting?post_ID="+post_ID);
+};
 </script>
 </html>

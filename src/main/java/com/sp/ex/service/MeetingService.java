@@ -14,13 +14,16 @@ public interface MeetingService {
 	MeetingDTO getMeetingInfo(int idx);
 
 	void addMember(String post_ID, String user_ID);
-
-	void addCurAttendeeNum(String post_ID);
+	void removeMember(String post_ID, String user_ID);
 
 	Object isAttended(String post_ID, String user_ID);
 
 	List<MeetingDTO> getMeetingListByID(String user_ID);
 
 	List<MeetingDTO> getMeetingListByOrganizerID(String Organier_ID);
+
+	void addCurAttendeeNum(int sum, String post_ID);
+
+	
 
 }

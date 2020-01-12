@@ -21,6 +21,11 @@
 		insert into attendee
 		values(#{post_ID}, #{user_ID})
 	</insert>
+	
+	<delete id="removeMember" parameterType="String">
+		delete from attendee
+		where post_ID=#{post_ID} AND ATTENDEE_ID= #{user_ID}
+	</delete>
 
 	<update id="reCounnting">
 		update MEETING set CUR_ATTENDEE=CUR_ATTENDEE+#{sum}

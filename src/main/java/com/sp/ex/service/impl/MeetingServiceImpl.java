@@ -30,8 +30,13 @@ public class MeetingServiceImpl implements MeetingService{
 		meetingMapper.addMember(post_ID, user_ID);
 	}
 	@Override
-	public void addCurAttendeeNum(String post_ID) {
-		meetingMapper.reCounnting(1, post_ID);
+	public void removeMember(String post_ID, String user_ID) {
+		System.out.println("IN ADDMEMBER post id = "+post_ID+" user_ID = "+user_ID);
+		meetingMapper.removeMember(post_ID, user_ID);
+	}
+	@Override
+	public void addCurAttendeeNum(int sum, String post_ID) {
+		meetingMapper.reCounnting(sum, post_ID);
 	}
 	@Override
 	public Object isAttended(String post_ID, String user_ID) {

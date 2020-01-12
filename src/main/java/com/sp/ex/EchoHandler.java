@@ -49,7 +49,7 @@ public class EchoHandler extends TextWebSocketHandler{
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
     	System.out.println("아아아2");
         //0번째에 session.getId() 1번째에 message.getPayload() 넣음
-        logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
+        logger.info("id = {}  로 부터 {} 받음", session.getAttributes().get("userID").toString(), message.getPayload());
         //logger.info("{}로부터 {}받음", new String[]{session.getId(),message.getPayload()});
         
         //연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
