@@ -152,13 +152,28 @@ div.right {
 		function goWrite(frm) {
 			var title = frm.title.value;
 			var content = frm.content.value;
-			alert("t = " + title + " c = " + content);
 			if (title.trim() == '') {
 				alert("t");
 			} else if (content.trim() == '') {
 				alert("c");
 			}
-			frm.submit();
+	
+ 			 var form = $('#writeform')[0];
+			
+	   	 // Create an FormData object 
+        	var data = new FormData(form);
+	   	 	alert(queryString);
+			$.ajax({
+				url : "/ex/Board/write",
+				type : "POST",
+				enctype : 'multipart/form-data',
+				processData: false,
+	            contentType: false,
+				data : data,
+				success : function() {
+					location.href = "/ex/Board/getBoardList";
+				}
+			}); 
 		}
 
 		//--------------------------------------글 목록에서 글 선택----------------------------------

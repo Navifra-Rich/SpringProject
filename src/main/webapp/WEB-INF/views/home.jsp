@@ -141,10 +141,11 @@
 										onClick="mypageClick()">마이페이지</button>
 								</div>
 								<div class="row m-0">
-									<div class="col-3 border p-2 bg-secondary">
+									<div class="col-3 border p-2 bg-secondary"
+										onClick="getAlarmList()">
 										알람
 										<div class="alarm"
-											style="display: inline-block; position: relative;  width: 10px; height: 10px;"></div>
+											style="display: inline-block; position: relative; width: 10px; height: 10px;"></div>
 									</div>
 									<div class="col-3 border p-2 bg-secondary">쪽지</div>
 									<div class="col-3 border p-2 bg-secondary"
@@ -189,26 +190,23 @@
 	</form>
 	<form action="/ex/Board/selectPost" method="GET" id="selectPost"></form>
 	<script>
-		
 		//------------------------------------웹 소켓---------------------------
-	 	let sock = new SockJS("http://localhost:8220/ex/echo");
-		sock.onmessage=OnMessage;
-		sock.onclose=OnClose;
+		let sock = new SockJS("http://localhost:8220/ex/echo");
+		sock.onmessage = OnMessage;
+		sock.onclose = OnClose;
 		//background-color: red;
-		function OnMessage(msg){
+		function OnMessage(msg) {
 			var data = msg.data;
-			$('#pr').append(data+'<br/>');
+			$('#pr').append(data + '<br/>');
 		}
-		function OnClose(){
-			alert("disconnect");
+		function OnClose() {
 		}
-		 
-		$('#sub').on('click',function(){
-			var msg=$('#msg').val();
+
+		$('#sub').on('click', function() {
+			var msg = $('#msg').val();
 			sock.send(msg);
 		});
-		
-		
+
 		function byLocation(loca) {
 			location.href = "/ex/Board/getPostListByLocation?location="
 					+ encodeURI(loca);
@@ -224,19 +222,18 @@
 			frm.submit();
 		});
 		$(document).ready(function() {
-			$.ajax({
-				url : "/ex/Main/getHomeInfo",
-				method : "POST",
-				dataType : "text",
-				success : function(text) {
-					//alert("@@!!@!@" + text);
-				},
-				error : function(e) {
-					//alert(e.responseText);
-				}
-			})
+			if ('${alarmCount}' != '') {
+				$('.alarm').css("background-color", "red");
+				$('.alarm').css("color", "white");
+				$('.alarm').append('${alarmCount}');
+			}
 		})
-
+		function getAlarmList() {
+			var left = window.screen.width / 2 - 250;
+			var top = window.screen.height / 2 - 200;
+			window.open("/ex/Alarm/getAlarmList", "alarm",
+					"width=500, height=400, left=" + left + ", top=" + top);
+		}
 		function mypageClick() {
 			location.href = "/ex/Main/myPage";
 		}

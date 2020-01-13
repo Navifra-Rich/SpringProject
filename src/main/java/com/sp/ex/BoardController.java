@@ -6,11 +6,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sp.ex.common.MainpageCommon;
 import com.sp.ex.dto.MeetingDTO;
 import com.sp.ex.dto.PagingDTO;
 import com.sp.ex.dto.postDTO;
@@ -47,6 +49,8 @@ public class BoardController {
 	@Autowired
 	private FileService fileService;
 
+	@Autowired
+	private MainpageCommon pageCom;
 	@RequestMapping("/writeForm")
 	public String wirteForm(Model model) {
 		// HttpSession session = request.getSession();
@@ -58,7 +62,8 @@ public class BoardController {
 
 	// ---------------------------------------------리펙토링 해야함, 컨트롤러가 아닌 서비스쪽에서 직접적인
 	// 기능 수행하도록-----
-	@RequestMapping("/write")
+	
+	@RequestMapping(value="/write")
 	public String writePost(HttpServletRequest request, @RequestParam("title") String title,
 			@RequestParam("content") String content, @RequestParam("time") String time,
 			@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile image,
@@ -100,15 +105,7 @@ public class BoardController {
 	public String selectPost(@RequestParam int idx, Model model, HttpServletRequest req) {
 		System.out.println("---------------in selectPost---------------");
 		System.out.println("idx = " + idx);
-		boardService.getPostInfo(idx, model);
-		model.addAttribute("meeting", meetingService.getMeetingInfo(idx));
-		HttpSession session = req.getSession();
-		if (session.getAttribute("userID") != null) {
-			String user_ID = session.getAttribute("userID").toString();
-			model.addAttribute("attended", meetingService.isAttended(Integer.toString(idx), user_ID));
-		} else
-			model.addAttribute("attended", null);
-
+		pageCom.selectPost(idx,model,req);
 		return "board/boardPost";
 	}
 

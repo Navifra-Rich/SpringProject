@@ -119,7 +119,8 @@
 					</c:forEach>
 				</div>
 				<div class="comment">
-					<form class="commentForm" action="/ex/Comment/writeComment">
+					<form class="commentForm" action="/ex/Comment/writeComment"
+						method="POST">
 						<input type="hidden" name="id" value="<%=userID%>">
 						<textarea name="content" placeholder="댓글 쓰기"
 							style="width: 650px; height: 80px;"></textarea>
@@ -136,7 +137,7 @@
 								<th>댓글 ${fn:length(comments)}</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="commentListBody">
 							<c:forEach var="coms" items="${comments}" varStatus="status">
 								<tr>
 									<td>id = ${coms.id}</td>
@@ -242,7 +243,7 @@
 	</div>
 	<script>
 		var postID = "${selectedPost.num}";
-		$('.title').on('click', function() {
+		$('.title').on('click', function() { n
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
 			frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
@@ -252,11 +253,28 @@
 			location.href = "/ex/Board/getBoardList?setPage=" + this.value;
 		})
 
-		$("#commentSubmit").on('click', function() {
-			alert("얍");
-			var frm = $('.commentForm')
-			frm.submit();
-		});
+		$("#commentSubmit").on(
+				'click',
+				function() {
+					alert("얍");
+					var frm = $('.commentForm')[0];
+					var data = new FormData(frm);
+					$.ajax({
+						url : '/ex/Comment/writeComment',
+						data : data,
+						processData:false,
+						contentType: false,
+						type : 'POST',
+						success : function() {
+							//---댓글 등록중 등록된 다른 댓글에 대한 처리 필요
+							$('#commentListBody').append(
+									"<tr><td>id = " + frm.id.value
+											+ "</td><td>" + frm.content.value
+											+ "</td></tr>");
+							$('.commentForm [name="content"]').val("");
+						}
+					});
+				});
 		function downloadFile() {
 			var temp = "${files['0'].directory}";
 			var url = "/ex/File/fileDownload?path=" + temp;

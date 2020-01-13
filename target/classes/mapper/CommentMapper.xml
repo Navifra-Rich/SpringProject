@@ -33,7 +33,5 @@
 		select LAST_NUMBER from
 		USER_SEQUENCES where sequence_name='COMMENT_SEQ'
 	</select>
-	<insert id="addCommentAlarm">
-		insert into COMMENT_ALARM values(#{comment_ID},#{post_title},#{user_ID},#{writer_ID},'N' )
-	</insert>
+	
 </mapper>

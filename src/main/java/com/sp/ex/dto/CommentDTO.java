@@ -7,6 +7,7 @@ public class CommentDTO {
 	String time;
 	int postNum;
 	
+	
 	public CommentDTO(String id, String content, String time, int postNum) {
 		super();
 		this.id = id;

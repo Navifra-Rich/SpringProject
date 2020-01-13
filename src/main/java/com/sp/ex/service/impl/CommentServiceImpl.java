@@ -27,11 +27,6 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void addCommentAlarm(int comment_ID, String post_title, String user_ID, String writer_ID) {
-		mapper.addCommentAlarm(comment_ID, post_title, user_ID, writer_ID);
-		return;
-	}
-	@Override
 	public int getLastCommentNum() {
 		return mapper.getLastCommentNum();
 	}
