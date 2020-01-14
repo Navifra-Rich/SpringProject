@@ -30,8 +30,8 @@ public class AlarmController {
 	}
 	@RequestMapping("/clickAlarm")
 	public String clickAlarm(int comment_ID,int post_ID, Model model, HttpServletRequest req) {
+		alarmService.checkAlarm(Integer.toString(comment_ID));
 		pageCom.selectPost(post_ID, model, req);
-		
 		return "/board/boardPost";
 	}
 }

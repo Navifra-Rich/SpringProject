@@ -61,10 +61,10 @@ public class BoardController {
 	}
 
 	// ---------------------------------------------리펙토링 해야함, 컨트롤러가 아닌 서비스쪽에서 직접적인
-	// 기능 수행하도록-----
+	// 기능 수행하도록 + 파라미터 받는 방식을 HashMap으로 간결하게+결합도 낮추기-----
 	
 	@RequestMapping(value="/write")
-	public String writePost(HttpServletRequest request, @RequestParam("title") String title,
+	public String writePost(HttpSession session, @RequestParam("title") String title,
 			@RequestParam("content") String content, @RequestParam("time") String time,
 			@RequestParam("file") MultipartFile file, @RequestParam("image") MultipartFile image,
 			@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay,
@@ -73,10 +73,7 @@ public class BoardController {
 			@RequestParam("max_attendee") int max_attendee, Model model) {
 		System.out.println("date = " + startDay + " startime = " + startTime);
 
-		HttpSession session = request.getSession();
 		String userID = (String) session.getAttribute("userID");
-
-		System.out.println("id = " + userID);
 		System.out.println("in write");
 
 		postDTO dto = new postDTO(0, userID, title, content, time, 0, startDay, endDay, startTime, endTime, location,
@@ -84,7 +81,6 @@ public class BoardController {
 
 		MeetingDTO mDTO = new MeetingDTO(boardService.getLastPostNum(), userID, title, max_attendee, 0, location,
 				category);
-
 		boardService.createPost(dto);
 		meetingService.createMeeting(mDTO);
 
@@ -92,7 +88,7 @@ public class BoardController {
 		model.addAttribute("page", pageDTO);
 		pageDTO.setPageInfo(1, boardService.getPostCount(), null);
 		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
-
+		
 		// --------------------------파일 업로드
 		String postID = boardService.getPostIDbyUser(userID);
 		fileService.UplodeFileBoard(file, postID, false);
@@ -115,7 +111,6 @@ public class BoardController {
 
 		System.out.println("in getBoardList");
 		boardService.setBoardPage(searchContent, model, setPage);
-		
 		return "board/boardMain";
 	}
 
@@ -123,21 +118,13 @@ public class BoardController {
 	public String addComment(Model model, @RequestParam("id") String id, @RequestParam("postNum") String boardNum,
 			@RequestParam("content") String content) {
 		System.out.println("in addComment");
-
 		return "board/boardPost";
-	}
-
-	@RequestMapping(value = "/searchPost", method = RequestMethod.GET)
-	public String searchPost(Model model, @RequestParam("content") String content) {
-		System.out.println("in searchPost");
-		return "board/boardMain";
 	}
 	
 	@RequestMapping(value="getPostListByLocation")
 	public String getPostListByLocation(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
 			@RequestParam(required = false, defaultValue = "") String location) {
 
-		System.out.println("in getBoardList");
 		PagingDTO pageDTO = new PagingDTO();
 		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
 		model.addAttribute("page", pageDTO);
@@ -149,8 +136,6 @@ public class BoardController {
 	public String getPostListByCategory(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
 			@RequestParam(required = false, defaultValue = "") String category) {
 
-		System.out.println("in getBoardList");
-		System.out.println("in getBoardList");
 		PagingDTO pageDTO = new PagingDTO();
 		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
 		model.addAttribute("page", pageDTO);

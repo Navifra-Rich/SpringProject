@@ -2,6 +2,8 @@ package com.sp.ex;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +37,8 @@ public class CommentController {
 
 	@RequestMapping("/writeComment")
 	@ResponseBody
-	public String writeComment(@RequestParam HashMap<Object, Object> param, Model model
+	public String writeComment(@RequestParam HashMap<Object, Object> param, Model model,
+			HttpSession session
 //			@RequestParam(value="id")String id,
 //			@RequestParam(value="content")String content,
 //			@RequestParam(value="postNum")int postNum,
@@ -59,6 +62,8 @@ public class CommentController {
 		model.addAttribute("meeting", meetingService.getMeetingInfo(postNum));
 		comment_alarm(commentService.getLastCommentNum(), selectedPost.getTitle(), selectedPost.getAuthor(), id,
 				Integer.toString(postNum));
+		session.setAttribute("alarmTo", selectedPost.getAuthor());
+		System.out.println("알람 받을 유저 = "+selectedPost.getAuthor());
 //		
 		return "/board/boardPost";
 	}

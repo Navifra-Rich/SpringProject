@@ -10,6 +10,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 <link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=210">
@@ -17,6 +19,9 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="<c:url value="/resources/js/common.js"/>"></script>
+<script src="<c:url value="/resources/js/navbar.js"/>"></script>
+<script src="<c:url value="/resources/js/board.js"/>"></script>
 <%
 	String userID = (String) session.getAttribute("userID");
 	MeetingDTO mDTO = (MeetingDTO) request.getAttribute("meeting");
@@ -64,7 +69,6 @@
 			</nav>
 		</div>
 	</div>
-
 	<div class="container_main">
 		<div class="column_left">
 			<div class="mycontent" style="float: right;">
@@ -76,7 +80,6 @@
 						${selectedPost.category}</span><br /> <span>시간
 						:${selectedPost.startDay} </span><span> ${selectedPost.startTime}시
 						부터 ${selectedPost.endDay} ${selectedPost.endTime}시 까지</span>
-
 					<%
 						if (max_att <= cur_att) {
 					%>
@@ -99,8 +102,6 @@
 							}
 							}
 						%>
-
-
 					</p>
 					<br /> <br />
 					<p>
@@ -162,7 +163,6 @@
 									id="inputID"
 									class="form-control form-control-sm bg-secondary text-white-50">
 							</div>
-
 							<div class="col-md-12">
 								<label for="inputPassowrd"></label> <input name="pw"
 									type="password" id="inputPassword"
@@ -195,8 +195,6 @@
 									onClick="getMeetingList()">모임</div>
 								<div class="col-3 border p-2 bg-secondary">삐롱</div>
 							</div>
-
-
 						</div>
 					</div>
 					<%
@@ -242,8 +240,9 @@
 		</c:forEach>
 	</div>
 	<script>
+		let sock = new SockJS("http://localhost:8220/ex/echo");
 		var postID = "${selectedPost.num}";
-		$('.title').on('click', function() { n
+		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
 			frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
@@ -262,8 +261,9 @@
 					$.ajax({
 						url : '/ex/Comment/writeComment',
 						data : data,
-						processData:false,
-						contentType: false,
+						processData : false,
+						contentType : false,
+						async : false,
 						type : 'POST',
 						success : function() {
 							//---댓글 등록중 등록된 다른 댓글에 대한 처리 필요
@@ -272,8 +272,11 @@
 											+ "</td><td>" + frm.content.value
 											+ "</td></tr>");
 							$('.commentForm [name="content"]').val("");
+							sock.send("comment_alarm");
+							alert("1")
 						}
 					});
+
 				});
 		function downloadFile() {
 			var temp = "${files['0'].directory}";

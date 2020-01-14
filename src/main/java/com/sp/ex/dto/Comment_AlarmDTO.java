@@ -3,17 +3,17 @@ package com.sp.ex.dto;
 public class Comment_AlarmDTO {
 	String comment_ID;
 	String post_ID;
-	String user_ID;
+	String author_ID;
 	String writer_ID;
 	String isChecked;
 	String post_Title;
 
-	public Comment_AlarmDTO(String comment_ID, String post_ID, String user_ID, String writer_ID, String isChecked,
+	public Comment_AlarmDTO(String comment_ID, String post_ID, String author_ID, String writer_ID, String isChecked,
 			String post_Title) {
 		super();
 		this.comment_ID = comment_ID;
 		this.post_ID = post_ID;
-		this.user_ID = user_ID;
+		this.author_ID = author_ID;
 		this.writer_ID = writer_ID;
 		this.isChecked = isChecked;
 		this.post_Title = post_Title;
@@ -31,10 +31,10 @@ public class Comment_AlarmDTO {
 		this.post_ID = post_ID;
 	}
 	public String getUser_ID() {
-		return user_ID;
+		return author_ID;
 	}
-	public void setUser_ID(String user_ID) {
-		this.user_ID = user_ID;
+	public void setUser_ID(String author_ID) {
+		this.author_ID = author_ID;
 	}
 	public String getWriter_ID() {
 		return writer_ID;

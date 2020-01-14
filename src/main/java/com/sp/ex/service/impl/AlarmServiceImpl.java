@@ -27,4 +27,8 @@ public class AlarmServiceImpl implements AlarmService {
 				post_title);
 		alarmMapper.addCommentAlarm(dto);
 	}
+	@Override 
+	public void checkAlarm(String comment_ID) {
+		alarmMapper.checkAlarm(comment_ID);
+	}
 }

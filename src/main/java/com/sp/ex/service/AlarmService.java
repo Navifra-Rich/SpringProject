@@ -11,4 +11,5 @@ public interface AlarmService {
 
 	List<Comment_AlarmDTO> getCommentAlarmList(String user_ID);
 	public void addCommentAlarm(int comment_ID, String post_title, String user_ID, String writer_ID,String post_ID);
+	void checkAlarm(String comment_ID);
 }

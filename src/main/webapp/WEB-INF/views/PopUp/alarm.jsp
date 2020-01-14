@@ -27,7 +27,7 @@
 			<c:forEach var="alarm" items="${comment_alarm}">
 				<tr>
 					<td>${alarm.comment_ID}</td>
-					<td class="alarmTitle" onClick="clickAlarm('${alarm.post_ID}','${alarm.comment_ID}')">${alarm.user_ID }님이${alarm.post_Title }게시물에
+					<td class="alarmTitle" onClick="clickAlarm('${alarm.post_ID}','${alarm.comment_ID}')">${alarm.writer_ID }님이${alarm.post_Title }게시물에
 						댓글을 남겼습니다.</td>
 				</tr>
 			</c:forEach>
@@ -37,7 +37,7 @@
 <script>
 	function clickAlarm(post_ID,comment_ID){
 		alert(post_ID);
-		location.href="/ex/Alarm/clickAlarm?comment_ID="+comment_ID+"&post_ID="+post_ID;
+		opener.location.href="/ex/Alarm/clickAlarm?comment_ID="+comment_ID+"&post_ID="+post_ID;
 	}
 </script>
 </html>

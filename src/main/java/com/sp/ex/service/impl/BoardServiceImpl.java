@@ -109,29 +109,17 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void setBoardPage(String searchContent,Model model,int culPage) {
 		System.out.println("query = "+searchContent);
+		PagingDTO pageDTO = new PagingDTO();
 		if (searchContent.equals("null") || searchContent.equals("")) {
 			System.out.println("검색 내용 없음");
-
-			PagingDTO pageDTO = new PagingDTO();
 			pageDTO.setPageInfo(culPage, getPostCount(), null);
-			model.addAttribute("page", pageDTO);
-			model.addAttribute("viewAll", getPostList(pageDTO));
-			List<postDTO> dto=getPostList(pageDTO);
-			
-			/*
-			for(postDTO dtos:dto) {
-				System.out.println("id "+dtos.toString());
-			}
-			 */
 		} else {
 			System.out.println("검색 내용 = " + searchContent);
-
-			PagingDTO pageDTO = new PagingDTO();
 			pageDTO.setPageInfo(culPage, getPostCount(), searchContent);
-			model.addAttribute("page", pageDTO);
-			model.addAttribute("viewAll", getPostList(pageDTO));
 			model.addAttribute("searchQuery", searchContent);
 		}
+		model.addAttribute("page", pageDTO);
+		model.addAttribute("viewAll", getPostList(pageDTO));
 	}
 	@Override
 	public void getPostInfo(int idx,Model model) {

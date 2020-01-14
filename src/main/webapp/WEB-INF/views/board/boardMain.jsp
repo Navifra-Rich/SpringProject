@@ -8,15 +8,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <script
 	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 <link rel="stylesheet" href="/ex/resources/css/myCss.css?ver=1">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
+<script src="<c:url value="/resources/js/common.js"/>"></script>
+<script src="<c:url value="/resources/js/navbar.js"/>"></script>
+<script src="<c:url value="/resources/js/board.js"/>"></script>
 </head>
 
 <body>
@@ -86,7 +89,7 @@
 								<c:forEach var="post" items="${viewAll}" varStatus="status">
 									<tr>
 										<td style="text-align: center;">${post.num}</td>
-										<td class="title" id="${post.num}">${post.title}</td>
+										<td class="title" id="${post.num}" onClick="selectPost('${post.num}')">${post.title}</td>
 										<td style="text-align: center;">${post.author}</td>
 										<td style="text-align: center;">${post.comCount}</td>
 										<td style="text-align: center;">${post.time}</td>
@@ -169,51 +172,21 @@
 	String ss = (String) request.getAttribute("searchQuery");
 %>
 <script>
+	//------------------------------------------Web Socket-----------------------------------------------------
+	let sock = new SockJS("http://localhost:8220/ex/echo");
+	sock.onmessage = onMessage;
+
+	function onMessage() {
+		alert("메세지 받았따!!!!");
+	};
+
+	//-----------------------------------------------------------------------------------------------
 	var query = '${searchQuery}'
 	$('#temp').on('click', function() {
 		alert("!");
 		alert("!!!" + aaa);
 	});
 
-	$('.title').on('click', function() {
-		var frm = $('#selectPost');
-		frm.attr('method', 'GET');
-		frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
-		//alert("id = " + this.id);
-		frm.submit();
-	});
-	$('.selectPage').on('click', function() {
-		var url = "";
-		//alert("id = " + this.id);
-		//--------------------------------------------페이지 번호 붙임--------------------------------------------------------
-		if (this.id == "prev") {
-			url = '/ex/Board/getBoardList?setPage=' + $
-			{
-				page.curPage - page.range
-			}
-			;
-		} else if (this.id == "next") {
-			url = '/ex/Board/getBoardList?setPage=' + $
-			{
-				page.curPage + page.range
-			}
-			;
-		} else {
-			url = '/ex/Board/getBoardList?setPage=' + this.value;
-		}
-
-		//--------------------------------------------검색 쿼리 붙임--------------------------------------------------------(
-
-		if (query == null) {
-			alert("검색내용 없음");
-		} else {
-			url += "&searchContent=" + query;
-		}
-		//alert("url = " + url);
-		location.href = url;
-	})
-	function goHome() {
-		location.href = "/ex/";
-	}
+	
 </script>
 </html>

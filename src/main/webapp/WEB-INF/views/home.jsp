@@ -13,15 +13,17 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
 	integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
 	crossorigin="anonymous">
-
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="<c:url value="/resources/js/common.js"/>"></script>
+<script src="<c:url value="/resources/js/navbar.js"/>"></script>
+<script src="<c:url value="/resources/js/board.js"/>"></script>
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 </head>
 <body>
 	<input type="text" id="msg">
 	<input type="button" id="sub" value="submit">
 	<div id="pr"></div>
-
 	<%
 		String userID = (String) session.getAttribute("userID");
 	%>
@@ -33,7 +35,6 @@
 			</div>
 			<div class="headLogo">head Logo~</div>
 			<div class="search_navbar"></div>
-
 			<div class="section_navbar">
 				<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 					<ul class="navbar-nav">
@@ -50,8 +51,7 @@
 							data-toggle="dropdown">활동으로 찾기 </a>
 							<div class="dropdown-menu">
 								<c:forEach var="cate" items="${categories}">
-									<a class="dropdown-item"
-										href="/ex/Board/getPostListByCategory?category=${cate.name}">${cate.name}</a>
+									<a class="dropdown-item" onClick="byCategory'${cate.name}')">${cate.name}</a>
 								</c:forEach>
 							</div></li>
 						<li class="nav-item active"><a class="nav-link"
@@ -152,8 +152,6 @@
 										onClick="getMeetingList()">모임</div>
 									<div class="col-3 border p-2 bg-secondary">삐롱</div>
 								</div>
-
-
 							</div>
 						</div>
 						<%
@@ -189,6 +187,7 @@
 		<input type="submit" value="temp">
 	</form>
 	<form action="/ex/Board/selectPost" method="GET" id="selectPost"></form>
+
 	<script>
 		//------------------------------------웹 소켓---------------------------
 		let sock = new SockJS("http://localhost:8220/ex/echo");
@@ -197,7 +196,21 @@
 		//background-color: red;
 		function OnMessage(msg) {
 			var data = msg.data;
+			var comment_alarm = 'comment_alarm';
+			var next = $
+			{
+				alarmCount
+			}
+			+1;
 			$('#pr').append(data + '<br/>');
+			alert(data);
+			if (data == comment_alarm) {
+				$('.alarm').css("background-color", "red");
+				$('.alarm').css("color", "white");
+				$('.alarm').val(next);
+				//리펙토링 필요, 궁극적인 목적 아님 next값 정하는데 모델쪽에서 처리해서 뷰로 줘야됨
+			} else
+				alert(msg);
 		}
 		function OnClose() {
 		}
@@ -206,14 +219,6 @@
 			var msg = $('#msg').val();
 			sock.send(msg);
 		});
-
-		function byLocation(loca) {
-			location.href = "/ex/Board/getPostListByLocation?location="
-					+ encodeURI(loca);
-		}
-		function myFunction() {
-			//alert('!!');
-		}
 		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
@@ -222,37 +227,12 @@
 			frm.submit();
 		});
 		$(document).ready(function() {
-			if ('${alarmCount}' != '') {
+			if ('${alarmCount}' != '0') {
 				$('.alarm').css("background-color", "red");
 				$('.alarm').css("color", "white");
 				$('.alarm').append('${alarmCount}');
 			}
 		})
-		function getAlarmList() {
-			var left = window.screen.width / 2 - 250;
-			var top = window.screen.height / 2 - 200;
-			window.open("/ex/Alarm/getAlarmList", "alarm",
-					"width=500, height=400, left=" + left + ", top=" + top);
-		}
-		function mypageClick() {
-			location.href = "/ex/Main/myPage";
-		}
-		function logout() {
-			location.href = "/ex/Main/logOut";
-		}
-		function temp() {
-			location.href = "/ex/Gogl/temp";
-		}
-		function goHome() {
-			location.href = "/ex/";
-		}
-		function getMeetingList() {
-			var left = window.screen.width / 2 - 250;
-			var top = window.screen.height / 2 - 200;
-			window.open("/ex/Meeting/getMeetingList?userID=${userID}",
-					"meeting", "width=500, height=400, left=" + left + ", top="
-							+ top);
-		}
 	</script>
 </body>
 </html>

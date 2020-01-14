@@ -7,9 +7,12 @@
 <mapper namespace="com.sp.ex.mapper.AlarmMapper">
 	<select id="getCommentAlarmList"
 		resultType="com.sp.ex.dto.Comment_AlarmDTO">
-		select * from COMMENT_ALARM where WRITER_ID=#{user_ID} and ISCHECKED='N'
+		select * from COMMENT_ALARM where AUTHOR_ID=#{author_ID} and ISCHECKED='N'
 	</select>
 	<insert id="addCommentAlarm">
-		insert into COMMENT_ALARM values(#{comment_ID},#{post_Title},#{user_ID},#{writer_ID},'N',#{post_ID})
+		insert into COMMENT_ALARM values(#{comment_ID},#{post_Title},#{author_ID},#{writer_ID},'N',#{post_ID})
 	</insert>
+	<update id="checkAlarm">
+		update COMMENT_ALARM set ISCHECKED ='Y' where COMMENT_ID=#{comment_ID}
+	</update>
 </mapper>

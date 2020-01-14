@@ -162,7 +162,6 @@ div.right {
 			
 	   	 // Create an FormData object 
         	var data = new FormData(form);
-	   	 	alert(queryString);
 			$.ajax({
 				url : "/ex/Board/write",
 				type : "POST",
