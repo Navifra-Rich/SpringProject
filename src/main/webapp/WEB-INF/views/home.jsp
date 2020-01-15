@@ -18,56 +18,18 @@
 <script src="<c:url value="/resources/js/common.js"/>"></script>
 <script src="<c:url value="/resources/js/navbar.js"/>"></script>
 <script src="<c:url value="/resources/js/board.js"/>"></script>
-<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+<script
+	src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 </head>
 <body>
 	<input type="text" id="msg">
 	<input type="button" id="sub" value="submit">
 	<div id="pr"></div>
-	<%
-		String userID = (String) session.getAttribute("userID");
-	%>
+
 	<div class="wrap">
 		<h1>Hello world!</h1>
-		<div class="header">
-			<div class="goHomeLogo">
-				GO<br />HOME
-			</div>
-			<div class="headLogo">head Logo~</div>
-			<div class="search_navbar"></div>
-			<div class="section_navbar">
-				<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-					<ul class="navbar-nav">
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbardrop"
-							data-toggle="dropdown">지역으로 찾기 </a>
-							<div class="dropdown-menu">
-								<c:forEach var="loca" items="${locations}">
-									<a class="dropdown-item" onClick="byLocation('${loca.name}')">${loca.name}</a>
-								</c:forEach>
-							</div></li>
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbardrop"
-							data-toggle="dropdown">활동으로 찾기 </a>
-							<div class="dropdown-menu">
-								<c:forEach var="cate" items="${categories}">
-									<a class="dropdown-item" onClick="byCategory'${cate.name}')">${cate.name}</a>
-								</c:forEach>
-							</div></li>
-						<li class="nav-item active"><a class="nav-link"
-							href="/ex/Board/getBoardList">전체게시판 <span class="sr-only">(current)</span>
-						</a></li>
-						<li class="nav-item active"><a class="nav-link"
-							href="/ex/Board/getBoardList">삐롱삐롱삐로로롱 <span class="sr-only">(current)</span>
-						</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-					</ul>
-					<form class="form-inline my-2 my-md-0">
-						<input class="form-control" type="text" placeholder="Search">
-					</form>
-				</nav>
-			</div>
-		</div>
+		<jsp:include page="./module/header-navbar.jsp" flush="true" />
+
 		<div class="container_main">
 			<div class="column_left">
 				<div class="column_leftTop">
@@ -101,63 +63,7 @@
 			</div>
 			<div class="column_right">
 				<div class="column_rightTop">
-					<div class="loginBox">
-						<%
-							if (userID == null) {
-						%>
-						<form action="Main/logIn" method="POST" class="form">
-							<div class="login_left">
-								<div class="col-md-12">
-									<label for="inputID"></label> <input name="id" type="text"
-										id="inputID"
-										class="form-control form-control-sm bg-secondary text-white-50">
-								</div>
-
-								<div class="col-md-12">
-									<label for="inputPassowrd"></label> <input name="pw"
-										type="password" id="inputPassword"
-										class="form-control form-control-sm bg-secondary text-white-50">
-								</div>
-							</div>
-							<div class="login_right">
-								<div class="form-group">
-									<input type="submit" class="btn btn-default bg-dark text-white"
-										value="전송">
-								</div>
-							</div>
-						</form>
-						<%
-							} else {
-						%>
-						<div
-							style="text-align: center; display: inline-block; width: 80%;">
-							<div>
-								<div class="border">
-									<img src="#" style="min-width: 90px; min-height: 90px;">
-									<%=userID%>님 로그인 됨
-									<button type="submit" class="btn btn-default"
-										onClick="logout()">로그아웃</button>
-									<button type="submit" class="btn btn-default"
-										onClick="mypageClick()">마이페이지</button>
-								</div>
-								<div class="row m-0">
-									<div class="col-3 border p-2 bg-secondary"
-										onClick="getAlarmList()">
-										알람
-										<div class="alarm"
-											style="display: inline-block; position: relative; width: 10px; height: 10px;"></div>
-									</div>
-									<div class="col-3 border p-2 bg-secondary">쪽지</div>
-									<div class="col-3 border p-2 bg-secondary"
-										onClick="getMeetingList()">모임</div>
-									<div class="col-3 border p-2 bg-secondary">삐롱</div>
-								</div>
-							</div>
-						</div>
-						<%
-							}
-						%>
-					</div>
+					<jsp:include page="./module/login.jsp" flush="false"/>
 				</div>
 				<div class="column_rightBottom">
 					<div class="contents_outter">

@@ -29,46 +29,7 @@
 	int cur_att = mDTO.getCur_attendee();
 %>
 <body>
-	<div class="header">
-		<div class="goHomeLogo" onClick="goHome()">
-			GO<br />HOME
-		</div>
-		<div class="headLogo">head Logo~</div>
-		<div class="search_navbar"></div>
-		<div class="section_navbar">
-			<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-				<ul class="navbar-nav">
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbardrop"
-						data-toggle="dropdown">지역으로 찾기 </a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">서울</a> <a class="dropdown-item"
-								href="#">느그집</a> <a class="dropdown-item" href="#">우리집</a>
-						</div></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbardrop"
-						data-toggle="dropdown">활동으로 찾기 </a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">스포츠</a> <a
-								class="dropdown-item" href="#">음악</a> <a class="dropdown-item"
-								href="#">독서</a>
-						</div></li>
-					<li class="nav-item active"><a class="nav-link"
-						href="/ex/Board/getBoardList">전체게시판 <span class="sr-only">(current)</span>
-					</a></li>
-					<li class="nav-item active"><a class="nav-link"
-						href="/ex/Board/getBoardList">삐롱삐롱삐로로롱 <span class="sr-only">(current)</span>
-					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-				</ul>
-				<form class="form-inline my-2 my-md-0"
-					action="/ex/Board/getBoardList" id="searchPost" method="GET">
-					<input name="searchContent" class="form-control" type="text"
-						placeholder="Search"><input type="submit" value="검색">
-				</form>
-			</nav>
-		</div>
-	</div>
+	<jsp:include page="../module/header-navbar.jsp" flush="true"/>
 	<div class="container_main">
 		<div class="column_left">
 			<div class="mycontent" style="float: right;">
@@ -152,55 +113,7 @@
 		</div>
 		<div class="column_right" style="width: 30%">
 			<div class="column_rightTop">
-				<div class="loginBox">
-					<%
-						if (userID == null) {
-					%>
-					<form action="Main/logIn" method="POST" class="form">
-						<div class="login_left">
-							<div class="col-md-12">
-								<label for="inputID"></label> <input name="id" type="text"
-									id="inputID"
-									class="form-control form-control-sm bg-secondary text-white-50">
-							</div>
-							<div class="col-md-12">
-								<label for="inputPassowrd"></label> <input name="pw"
-									type="password" id="inputPassword"
-									class="form-control form-control-sm bg-secondary text-white-50">
-							</div>
-						</div>
-						<div class="login_right">
-							<div class="form-group">
-								<input type="submit" class="btn btn-default bg-dark text-white"
-									value="전송">
-							</div>
-						</div>
-					</form>
-					<%
-						} else {
-					%>
-					<div style="text-align: center; display: inline-block; width: 80%;">
-						<div>
-							<div class="border">
-								<img src="#" style="min-width: 90px; min-height: 90px;">
-								<%=userID%>님 로그인 됨
-								<button type="submit" class="btn btn-default" onClick="logout()">로그아웃</button>
-								<button type="submit" class="btn btn-default"
-									onClick="mypageClick()">마이페이지</button>
-							</div>
-							<div class="row m-0">
-								<div class="col-3 border p-2 bg-secondary">알람</div>
-								<div class="col-3 border p-2 bg-secondary">쪽지</div>
-								<div class="col-3 border p-2 bg-secondary"
-									onClick="getMeetingList()">모임</div>
-								<div class="col-3 border p-2 bg-secondary">삐롱</div>
-							</div>
-						</div>
-					</div>
-					<%
-						}
-					%>
-				</div>
+					<jsp:include page="../module/login.jsp" flush="false"/>
 			</div>
 		</div>
 	</div>
