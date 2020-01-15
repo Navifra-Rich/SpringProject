@@ -185,7 +185,7 @@
 											+ "</td><td>" + frm.content.value
 											+ "</td></tr>");
 							$('.commentForm [name="content"]').val("");
-							sock.send("comment_alarm");
+							sock.send('{"id":"${selectedPost.author}", "alarm":"comment_alarm"}');
 							alert("1")
 						}
 					});

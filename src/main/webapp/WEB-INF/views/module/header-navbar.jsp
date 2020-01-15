@@ -2,10 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="header">
-	<div class="goHomeLogo">
+	<div class="goHomeLogo" onClick="goHome()">
 		GO<br />HOME
 	</div>
-	<div class="headLogo">head Logo~</div>
+	<div class="headLogo" >head Logo~</div>
 	<div class="search_navbar"></div>
 	<div class="section_navbar">
 		<nav class="navbar navbar-expand-sm navbar-dark bg-dark">

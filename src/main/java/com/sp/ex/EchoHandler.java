@@ -3,6 +3,8 @@ package com.sp.ex;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +58,16 @@ public class EchoHandler extends TextWebSocketHandler {
 
 		// 연결된 모든 클라이언트에게 메시지 전송 : 리스트 방법
 		// getPrincipal()를 이용해서 세션에 물려있는 유저의 정보를 불러온다.세션의 정보는 User를 이용한것과 동일하다.//
-		if (session.getAttributes().get("alarmTo") == null) {
-			System.out.println("알람 받을 유저 없음");
-			return;
-		}
+		
+		JSONParser parser = new JSONParser();
+		JSONObject obj = (JSONObject) parser.parse(message.getPayload());
+		
+		System.out.println("!!!!!!!!!!!!!"+obj.get("id"));
+		
+		
 
-		String from = session.getAttributes().get("alarmTo").toString();
-		System.out.println("알람 받을 유저 = " + from);
+		String from = obj.get("id").toString();
+		System.out.println("!!!!!!!!알람 받을 유저 = " + from+"!!!!!!!!!!!!!"+obj.get("id"));
 		for (WebSocketSession sess : sessionList) {
 			String to = sess.getAttributes().get("userID").toString();
 			System.out.println("현재 유저 = " + to);
