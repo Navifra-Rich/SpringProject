@@ -11,4 +11,5 @@ public interface AlarmMapper {
 	public List<Comment_AlarmDTO> getCommentAlarmList(String user_ID);
 	public void addCommentAlarm(Comment_AlarmDTO dto);
 	public void checkAlarm(@Param("comment_ID")String comment_ID);
+	public void checkAlarmAll(@Param("user_ID")String user_ID);
 }

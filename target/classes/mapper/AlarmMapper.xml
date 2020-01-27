@@ -15,4 +15,7 @@
 	<update id="checkAlarm">
 		update COMMENT_ALARM set ISCHECKED ='Y' where COMMENT_ID=#{comment_ID}
 	</update>
+	<update id="checkAlarmAll">
+		update COMMENT_ALARM set ISCHECKED = 'Y' where WRITER_ID=#{user_ID}
+	</update>
 </mapper>

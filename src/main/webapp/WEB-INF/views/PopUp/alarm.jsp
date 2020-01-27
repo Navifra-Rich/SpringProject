@@ -16,28 +16,39 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<table class="table table-hover table-striped">
-		<thead>
-			<tr>
-				<th>comment.No</th>
-				<th>summary</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="alarm" items="${comment_alarm}">
+	<div id="head">댓글 알림</div>
+	<div id="contents">
+		<table class="table table-hover table-striped">
+			<thead>
 				<tr>
-					<td>${alarm.comment_ID}</td>
-					<td class="alarmTitle" onClick="clickAlarm('${alarm.post_ID}','${alarm.comment_ID}')">${alarm.writer_ID }님이${alarm.post_Title }게시물에
-						댓글을 남겼습니다.</td>
+					<th>comment.No</th>
+					<th>summary</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach var="alarm" items="${comment_alarm}">
+					<tr>
+						<td>${alarm.comment_ID}</td>
+						<td class="alarmTitle"
+							onClick="clickAlarm('${alarm.post_ID}','${alarm.comment_ID}')">${alarm.writer_ID }님이${alarm.post_Title }게시물에
+							댓글을 남겼습니다.</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<div style="text-align:right;"> <input type="button" class="btn btn-default bg-dark text-white" value="전체 확인" onClick="checkAll()"></div>
 </body>
 <script>
-	function clickAlarm(post_ID,comment_ID){
+	//해당 알림의 게시글로 이동함
+	function clickAlarm(post_ID, comment_ID) {
 		alert(post_ID);
-		opener.location.href="/ex/Alarm/clickAlarm?comment_ID="+comment_ID+"&post_ID="+post_ID;
+		opener.location.href = "/ex/Alarm/clickAlarm?comment_ID=" + comment_ID
+				+ "&post_ID=" + post_ID;
+	}
+	//모든 알림 일괄 확인
+	function checkAll(){
+		location.href='<c:url value="/Alarm/checkAll"/>';
 	}
 </script>
 </html>

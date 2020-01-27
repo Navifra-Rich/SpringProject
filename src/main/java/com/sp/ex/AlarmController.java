@@ -25,7 +25,7 @@ public class AlarmController {
 	@RequestMapping("/getAlarmList")
 	public String getAlarmList(Model model, HttpServletRequest req) {
 		String user_ID = req.getSession().getAttribute("userID").toString();
-		model.addAttribute("comment_alarm",alarmService.getCommentAlarmList(user_ID));
+		addAlarmListAttribute(model, user_ID);
 		return "/PopUp/alarm";
 	}
 	@RequestMapping("/clickAlarm")
@@ -33,5 +33,17 @@ public class AlarmController {
 		alarmService.checkAlarm(Integer.toString(comment_ID));
 		pageCom.selectPost(post_ID, model, req);
 		return "/board/boardPost";
+	}
+	@RequestMapping("/checkAll")
+	public String checkAll(Model model, HttpServletRequest req) {
+		
+		String user_ID = req.getSession().getAttribute("userID").toString();
+		//alarmService.checkAlarmAll(user_ID);
+		addAlarmListAttribute(model, user_ID);
+		return "/PopUp/alarm";
+	}
+	
+	public void addAlarmListAttribute(Model model,String user_ID) {
+		model.addAttribute("comment_alarm",alarmService.getCommentAlarmList(user_ID));
 	}
 }

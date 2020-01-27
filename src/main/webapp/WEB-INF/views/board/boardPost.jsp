@@ -22,6 +22,7 @@
 <script src="<c:url value="/resources/js/common.js"/>"></script>
 <script src="<c:url value="/resources/js/navbar.js"/>"></script>
 <script src="<c:url value="/resources/js/board.js"/>"></script>
+<script src="<c:url value="/resources/js/webSocket.js"/>"></script>
 <%
 	String userID = (String) session.getAttribute("userID");
 	MeetingDTO mDTO = (MeetingDTO) request.getAttribute("meeting");
@@ -111,7 +112,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="column_right" style="width: 30%">
+		<div class="column_right" style="width: 30%; height: 800px;">
 			<div class="column_rightTop">
 					<jsp:include page="../module/login.jsp" flush="false"/>
 			</div>
@@ -153,14 +154,7 @@
 		</c:forEach>
 	</div>
 	<script>
-		let sock = new SockJS("http://localhost:8220/ex/echo");
-		var postID = "${selectedPost.num}";
-		$('.title').on('click', function() {
-			var frm = $('#selectPost');
-			frm.attr('method', 'GET');
-			frm.append("<input type='hidden' name='idx' value='"+this.id+"'>")
-			frm.submit();
-		});
+
 		$('.selectPage').on('click', function() {
 			location.href = "/ex/Board/getBoardList?setPage=" + this.value;
 		})
@@ -218,6 +212,9 @@
 							'fullscreen=no, width=800 height=600 scrollbars=no, location=no, resizable=no, left='
 									+ left + ', top=' + top);
 		}
+		$(document).ready(function() {
+			alarmSet('${alarmCount}');
+		})
 	</script>
 	<%
 		request.setAttribute("startTime", "abcd123");

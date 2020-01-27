@@ -7,7 +7,7 @@
 						String userID = (String) session.getAttribute("userID");
 							if (userID == null) {
 						%>
-						<form action="Main/logIn" method="POST" class="form">
+						<form action="/ex/Main/logIn" method="POST" class="form">
 							<div class="login_left">
 								<div class="col-md-12">
 									<label for="inputID"></label> <input name="id" type="text"
@@ -28,6 +28,9 @@
 								</div>
 							</div>
 						</form>
+						<div>
+						<input type="button" class="btn btn-default bg-dark text-white" value="회원가입" onClick="signUpPage()"></input>
+						</div>
 						<%
 							} else {
 						%>

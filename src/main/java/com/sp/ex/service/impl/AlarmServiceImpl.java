@@ -31,4 +31,7 @@ public class AlarmServiceImpl implements AlarmService {
 	public void checkAlarm(String comment_ID) {
 		alarmMapper.checkAlarm(comment_ID);
 	}
+	public void checkAlarmAll(String user_ID) {
+		
+	}
 }

@@ -10,7 +10,7 @@ import com.sp.ex.dto.*;
 
 @Service
 public interface BoardService {
-		public void setBoardPage(String searchContent, Model model, int culPage);
+		public PagingDTO setBoardPage(String searchContent, Model model, int curPage);
 	
 		public void createPost(postDTO dto);
 		public void createComment(CommentDTO dto);

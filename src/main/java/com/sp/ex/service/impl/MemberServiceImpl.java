@@ -43,15 +43,19 @@ public class MemberServiceImpl implements MemberService{
 		return;
 	}
 	@Override
-	public MemberDTO signUp(String id,String name, String pw) {
-		MemberDTO dto = mapper.getUserInfo(id);
-		if(dto!=null) {
-			System.out.println("이미 존재함 ㅂㅂ");
-		} else if(dto==null) {
+	public boolean idDuplicated(String id) {
+		if(mapper.getUserInfo(id)!=null)
+			return true;
+		return false;
+	}
+	@Override
+	public void signUp(String id,String name, String pw) {
+		if(idDuplicated(id)) {
+			return;
+		} else  {
 			System.out.println("회원 생성");
 			memberDAO.memberInsert(new MemberDTO(id,name,pw));
 		}
-		return dto;
 	}
 	@Override
 	public boolean logIn(String id, String pw) {

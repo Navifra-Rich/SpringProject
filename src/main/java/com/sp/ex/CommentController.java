@@ -47,6 +47,7 @@ public class CommentController {
 
 		System.out.println("in writeComment paramSize = "+param.size());
 		String id=param.get("id").toString();
+		
 		String content = param.get("content").toString();
 		int postNum = Integer.parseInt(param.get("postNum").toString());
 		int curPage = Integer.parseInt(param.get("curPage").toString()) ;
@@ -54,7 +55,9 @@ public class CommentController {
 		commentService.writeComment(comDTO);
 		postDTO selectedPost = boardService.showPost(postNum);
 		model.addAttribute("selectedPost", selectedPost);
-		PagingDTO pageDTO = new PagingDTO();
+		
+		
+		PagingDTO pageDTO =boardService.setBoardPage("", model, curPage);
 		pageDTO.setPageInfo(curPage, boardService.getPostCount(), null);
 		model.addAttribute("page", pageDTO);
 		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
@@ -63,8 +66,7 @@ public class CommentController {
 		comment_alarm(commentService.getLastCommentNum(), selectedPost.getTitle(), selectedPost.getAuthor(), id,
 				Integer.toString(postNum));
 		session.setAttribute("alarmTo", selectedPost.getAuthor());
-		System.out.println("알람 받을 유저 = "+selectedPost.getAuthor());
-//		
+		System.out.println("알람 받을 유저 = "+selectedPost.getAuthor());	
 		return "/board/boardPost";
 	}
 

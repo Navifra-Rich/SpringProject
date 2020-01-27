@@ -18,7 +18,7 @@ public interface BoardMapper {
 	//--------------------게시글 목록
 	public List<postDTO> getPostList(PagingDTO pageDTO);
 	public List<CommentDTO> getCommentList(int postNum);
-	public List<postDTO> getSearchedPostList(PagingDTO pageDTO);
+	//public List<postDTO> getSearchedPostList(PagingDTO pageDTO);
 
 	
 	//---------------------카테고리와 지역을 불러옴

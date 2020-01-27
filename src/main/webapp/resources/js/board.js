@@ -12,7 +12,7 @@ function selectPost(post_ID) {
 };
 
 // 페이지 이동 버튼을 눌렀을 때 실행되는 함수 - 페이지 이동(게시판의 페이지)
-$('.selectPage').on('click', function() {
+function selectPage() {
 	var url = "";
 	// alert("id = " + this.id);
 	// --------------------------------------------페이지 번호
@@ -41,4 +41,4 @@ $('.selectPage').on('click', function() {
 		url += "&searchContent=" + query;
 	}
 	location.href = url;
-})
+};

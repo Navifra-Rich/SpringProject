@@ -15,15 +15,17 @@
 	crossorigin="anonymous">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<script src="<c:url value="/resources/js/common.js"/>"></script>
-<script src="<c:url value="/resources/js/navbar.js"/>"></script>
+<script src="<c:url value="/resources/js/common.js?ver=1"/>"
+	charset="UTF-8"></script>
+<script src="<c:url value="/resources/js/navbar.js?ver=1"/>"></script>
 <script src="<c:url value="/resources/js/board.js"/>"></script>
+<script src="<c:url value="/resources/js/webSocket.js"/>"></script>
 <script
 	src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
 </head>
 <body>
 	<input type="text" id="msg">
-	<input type="button" id="sub" value="submit">
+	<input type="button" id="sub" value="전송" onClick="temp()">
 	<div id="pr"></div>
 
 	<div class="wrap">
@@ -50,15 +52,47 @@
 				</div>
 				<div class="column_leftBottom">
 					<div class="contents_outter">
-						<ul class="nav nav-tabs bg-dark">
-							<li class="nav-item"><button class="nav-link active"
-									onClick="leftBottumClick()">1</button></li>
-							<li class="nav-item"><button class="nav-link active"
-									onClick="leftBottumClick()">2</button></li>
-							<li class="nav-item"><button class="nav-link active"
-									onClick="leftBottumClick()">3</button></li>
+						<ul class="nav nav-tabs bg-dark" role="tablist">
+							<c:forEach varStatus="idx" var="loca" items="${locations}"
+								end="4">
+								<li class="nav-item"><a class="nav-link text-light" data-toggle="tab"
+									href="#${loca.name}">${loca.name }</a></li>
+							</c:forEach>
 						</ul>
+						<div class="tab-content">
+							<c:forEach varStatus="idx" var="loca" items="${locations}"
+								end="4">
+								<div class="container tab-pane fade" id="${loca.name}">
+									<table class="table table-striped table-hover table-sm">
+										<thead>
+											<tr>
+												<th style="width: 10%; text-align: center;">글번호</th>
+												<th style="width: 50%;">제목</th>
+												<th style="width: 20%; text-align: center;">작성자</th>
+												<th style="width: 10%; text-align: center;">댓글 수</th>
+												<th style="width: 10%; text-align: center;">시간</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="post" items="${hitContents}" varStatus="status">
+												<tr>
+													<td style="text-align: center;">${post.num}</td>
+													<td class="title" id="${post.num}"
+														onClick="selectPost('${post.num}')">${post.title}</td>
+													<td style="text-align: center;">${post.author}</td>
+													<td style="text-align: center;">${post.comCount}</td>
+													<td style="text-align: center;">${post.time}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+
+							</c:forEach>
+						</div>
 					</div>
+
+
 				</div>
 			</div>
 			<div class="column_right">
@@ -70,7 +104,7 @@
 						<h4 class="mb-3 pb-2 text-secondary">최근 작성된 게시글</h4>
 						<table class="table table-bordered">
 							<tbody>
-								<c:forEach var="con" items="${viewAll}">
+								<c:forEach var="con" items="${recentPost}">
 									<tr>
 										<td>[${con.location}][${con.category}]</td>
 										<td>${con.title}</td>
@@ -95,12 +129,10 @@
 	<form action="/ex/Board/selectPost" method="GET" id="selectPost"></form>
 
 	<script>
-		
-
-		$('#sub').on('click', function() {
+		function temp() {
 			var msg = $('#msg').val();
-			sock.send(msg);
-		});
+			location.href = "/ex/Main/temp?msg=" + msg;
+		}
 		$('.title').on('click', function() {
 			var frm = $('#selectPost');
 			frm.attr('method', 'GET');
@@ -109,11 +141,7 @@
 			frm.submit();
 		});
 		$(document).ready(function() {
-			if ('${alarmCount}' != '0') {
-				$('.alarm').css("background-color", "red");
-				$('.alarm').css("color", "white");
-				$('.alarm').append('${alarmCount}');
-			}
+			alarmSet('${alarmCount}');
 		})
 	</script>
 </body>

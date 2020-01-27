@@ -23,7 +23,7 @@
 					data-toggle="dropdown">활동으로 찾기 </a>
 					<div class="dropdown-menu">
 						<c:forEach var="cate" items="${categories}">
-							<a class="dropdown-item" onClick="byCategory'${cate.name}')">${cate.name}</a>
+							<a class="dropdown-item" onClick="byCategory('${cate.name}')">${cate.name}</a>
 						</c:forEach>
 					</div></li>
 				<li class="nav-item active"><a class="nav-link"
@@ -35,7 +35,7 @@
 				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
 			</ul>
 			<form class="form-inline my-2 my-md-0">
-				<input class="form-control" type="text" placeholder="Search">
+				<input class="form-control" type="text" placeholder="Search" name="searchContent">
 			</form>
 		</nav>
 	</div>

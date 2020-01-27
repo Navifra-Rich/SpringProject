@@ -33,32 +33,9 @@ public class HomeController {
 	MainpageCommon mainCom;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model,HttpServletRequest req) {
-		
-		logger.info("Welcome home! The client locale is {}.", locale);
-
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
 		mainCom.mainPageCom(model, req);
-		/*
-		 * model.addAttribute("hitContents", boardService.getHitPost());
-		 * model.addAttribute("locations", boardService.getLocations());
-		 * model.addAttribute("categories", boardService.getCategories());
-		 * 
-		 * if(req.getSession().getAttribute("userID")!=null) { String
-		 * user_ID=req.getSession().getAttribute("userID").toString();
-		 * model.addAttribute("alarmCount",alarmService.getCommentAlarmList(user_ID).
-		 * size()); }
-		 */
-		
-//		boardService.setBoardPage("", model, 1);
 		
 		return "home";
 	}

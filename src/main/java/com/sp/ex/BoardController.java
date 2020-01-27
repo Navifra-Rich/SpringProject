@@ -53,10 +53,7 @@ public class BoardController {
 	private MainpageCommon pageCom;
 	@RequestMapping("/writeForm")
 	public String wirteForm(Model model) {
-		// HttpSession session = request.getSession();
-		model.addAttribute("locations", boardService.getLocations());
-		model.addAttribute("categories", boardService.getCategories());
-		// System.out.println("user id = " + session.getAttribute("userID"));
+		pageCom.headerNavCom(model);
 		return "board/boardWrite";
 	}
 
@@ -74,20 +71,17 @@ public class BoardController {
 		System.out.println("date = " + startDay + " startime = " + startTime);
 
 		String userID = (String) session.getAttribute("userID");
-		System.out.println("in write");
-
 		postDTO dto = new postDTO(0, userID, title, content, time, 0, startDay, endDay, startTime, endTime, location,
 				category);
-
 		MeetingDTO mDTO = new MeetingDTO(boardService.getLastPostNum(), userID, title, max_attendee, 0, location,
 				category);
 		boardService.createPost(dto);
 		meetingService.createMeeting(mDTO);
 
-		PagingDTO pageDTO = new PagingDTO();
+		PagingDTO pageDTO =boardService.setBoardPage("", model, 1);
 		model.addAttribute("page", pageDTO);
-		pageDTO.setPageInfo(1, boardService.getPostCount(), null);
 		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
+		pageCom.headerNavCom(model);
 		
 		// --------------------------파일 업로드
 		String postID = boardService.getPostIDbyUser(userID);
@@ -102,63 +96,49 @@ public class BoardController {
 		System.out.println("---------------in selectPost---------------");
 		System.out.println("idx = " + idx);
 		pageCom.selectPost(idx,model,req);
+		pageCom.headerNavCom(model);
 		return "board/boardPost";
 	}
 
-	@RequestMapping(value = "/getBoardList", method = RequestMethod.GET)
-	public String getBoardList(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
-			@RequestParam(required = false, defaultValue = "") String searchContent) {
-
-		System.out.println("in getBoardList");
-		boardService.setBoardPage(searchContent, model, setPage);
-		return "board/boardMain";
-	}
+	
 
 	@RequestMapping(value = "/addComment", method = RequestMethod.GET)
 	public String addComment(Model model, @RequestParam("id") String id, @RequestParam("postNum") String boardNum,
 			@RequestParam("content") String content) {
 		System.out.println("in addComment");
+		pageCom.headerNavCom(model);
 		return "board/boardPost";
 	}
-	
-	@RequestMapping(value="getPostListByLocation")
-	public String getPostListByLocation(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
-			@RequestParam(required = false, defaultValue = "") String location) {
-
-		PagingDTO pageDTO = new PagingDTO();
-		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
+	@RequestMapping(value = "/getBoardList", method = RequestMethod.GET)
+	public String getBoardList(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
+			@RequestParam(required = false, defaultValue = "") String searchContent) {
+		System.out.println("in getBoardList");
+		PagingDTO pageDTO=boardService.setBoardPage(searchContent, model, setPage);
 		model.addAttribute("page", pageDTO);
-		boardService.getPostListByLocation(location, pageDTO);
 		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
+		pageCom.headerNavCom(model);
 		return "board/boardMain";
 	}
-	@RequestMapping(value="getPostListByCategory")
+	@RequestMapping(value="/getPostListByLocation")
+	public String getPostListByLocation(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
+			@RequestParam(required = false, defaultValue = "") String searchContent,
+			@RequestParam(required = false, defaultValue = "") String location) {
+		System.out.println("in getBoardList by location");
+		PagingDTO pageDTO=boardService.setBoardPage(searchContent, model, setPage);
+		model.addAttribute("page", pageDTO);
+		model.addAttribute("viewAll", boardService.getPostListByLocation(location, pageDTO));
+		pageCom.headerNavCom(model);
+		return "board/boardMain";
+	}
+	@RequestMapping(value="/getPostListByCategory")
 	public String getPostListByCategory(Model model, @RequestParam(required = false, defaultValue = "1") int setPage,
+			@RequestParam(required = false, defaultValue = "") String searchContent,
 			@RequestParam(required = false, defaultValue = "") String category) {
 
-		PagingDTO pageDTO = new PagingDTO();
-		pageDTO.setPageInfo(setPage, boardService.getPostCount(), null);
+		PagingDTO pageDTO = boardService.setBoardPage(searchContent, model, setPage);
 		model.addAttribute("page", pageDTO);
-		boardService.getPostListByLocation(category, pageDTO);
-		model.addAttribute("viewAll", boardService.getPostList(pageDTO));
+		model.addAttribute("viewAll", boardService.getPostListByCategory(category, pageDTO));
+		pageCom.headerNavCom(model);
 		return "board/boardMain";
 	}
-	/*
-	 * @RequestMapping(value = "/attend") public String attend( HttpServletRequest
-	 * request, HttpServletResponse response, Model model) throws Exception { String
-	 * user_ID = request.getSession().getAttribute("userID").toString();
-	 * 
-	 * // -------------------데이터베이스에 참가자 추가-------------- //
-	 * eventService.attendEvent(postID, userID); // -------------------구글 캘린더 연동을 위한
-	 * 토큰 얻음-------------- // if 엑세스 토큰이 존재한다면 if
-	 * (googleService.getAccessToken(user_ID) != null) {
-	 * System.out.println("이미 토큰 존재함"); } // else if 리프레쉬 토큰이 존재한다면 // else (엑세스,
-	 * 리프레쉬토큰 둘다 없는 경우) else { //나중에 안내 페이지를 거치도록 수정 ㄱ
-	 * System.out.println("토큰 발급 필요"); String codePath = googleService.getCodeURL();
-	 * System.out.println("path = " + codePath); return "redirect:" + codePath; }
-	 * model.addAttribute("calendarList",googleCalendarService.getCalendarList(
-	 * user_ID)); //
-	 * boardService.getPostInfo(Integer.parseInt(request.getParameter("postID")), //
-	 * model); return "PopUp/selectCalendar"; }
-	 */
 }

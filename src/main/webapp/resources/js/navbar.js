@@ -1,13 +1,13 @@
 /**
- * Çì´õ ³×ºñ°ÔÀÌ¼Ç ¹Ù¿¡¼­ »ç¿ëÇÏ´Â js ÇÔ¼ö
+ * ï¿½ï¿½ï¿½ ï¿½×ºï¿½ï¿½ï¿½Ì¼ï¿½ ï¿½Ù¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ js ï¿½Ô¼ï¿½
  */
-// Áö¿ªº° °Ë»ö
-function byLocation(loca) {
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+function byLocation(loca) {	
 	location.href = "/ex/Board/getPostListByLocation?location="
 			+ encodeURI(loca);
 }
-// Ä«Å×°í¸®º° °Ë»ö
-function byLocation(cate) {
+// Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+function byCategory(cate) {
 	location.href = "/ex/Board/getPostListByCategory?category="
 			+ encodeURI(cate);
 }

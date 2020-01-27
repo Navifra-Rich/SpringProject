@@ -18,7 +18,7 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="<c:url value="/resources/js/common.js"/>"></script>
-<script src="<c:url value="/resources/js/navbar.js"/>"></script>
+<script src="<c:url value="/resources/js/navbar.js?ver=1"/>"></script>
 <script src="<c:url value="/resources/js/board.js"/>"></script>
 </head>
 
@@ -69,7 +69,7 @@
 						</c:if>
 						<c:forEach varStatus="idx" var="page" begin="${page.startPage}"
 							end="${page.endPage-1}">
-							<input type="button" value="${idx.current}" class="selectPage">
+							<input type="button" value="${idx.current}" class="selectPage" onClick="selectPage()">
 						</c:forEach>
 						<c:if test="${page.next}">
 							<input type="button" value="다음" id="next" class="selectPage">
@@ -109,6 +109,8 @@
 		alert("!!!" + aaa);
 	});
 
-	
+	$(document).ready(function() {
+		alarmSet('${alarmCount}');
+	})
 </script>
 </html>

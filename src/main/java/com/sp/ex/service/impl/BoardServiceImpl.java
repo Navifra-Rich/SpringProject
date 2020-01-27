@@ -1,18 +1,17 @@
 package com.sp.ex.service.impl;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.sp.ex.dto.CommentDTO;
-import com.sp.ex.dto.PagingDTO;
-import com.sp.ex.dto.postDTO;
 import com.sp.ex.dto.FileDTO;
 import com.sp.ex.dto.IDNameDTO;
+import com.sp.ex.dto.PagingDTO;
+import com.sp.ex.dto.postDTO;
 import com.sp.ex.mapper.BoardMapper;
-import com.sp.ex.service.*;
+import com.sp.ex.service.BoardService;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -33,7 +32,6 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public List<postDTO> viewAll() {
-		
 		return mapper.viewAll();
 	}
 
@@ -52,13 +50,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public List<postDTO> getPostList(PagingDTO pageDTO) {
-		if(pageDTO.getQuery()==null) {
-			return mapper.getPostList(pageDTO);	
-		}else {
-			System.out.println("검색 쿼리 = "+pageDTO.getQuery());
-			return mapper.getSearchedPostList(pageDTO);
-		}
-		
+		return mapper.getPostList(pageDTO);		
 	}
 	@Override
 	public List<postDTO> getPostListByLocation(String location, PagingDTO pageDTO){
@@ -107,19 +99,19 @@ public class BoardServiceImpl implements BoardService{
 		return mapper.getFileList(postID);
 	}
 	@Override
-	public void setBoardPage(String searchContent,Model model,int culPage) {
+	public PagingDTO setBoardPage(String searchContent,Model model,int curPage) {
 		System.out.println("query = "+searchContent);
 		PagingDTO pageDTO = new PagingDTO();
 		if (searchContent.equals("null") || searchContent.equals("")) {
 			System.out.println("검색 내용 없음");
-			pageDTO.setPageInfo(culPage, getPostCount(), null);
+			pageDTO.setPageInfo(curPage, getPostCount(), null);
 		} else {
 			System.out.println("검색 내용 = " + searchContent);
-			pageDTO.setPageInfo(culPage, getPostCount(), searchContent);
+			pageDTO.setPageInfo(curPage, getPostCount(), searchContent);
 			model.addAttribute("searchQuery", searchContent);
 		}
-		model.addAttribute("page", pageDTO);
-		model.addAttribute("viewAll", getPostList(pageDTO));
+		return pageDTO;
+		
 	}
 	@Override
 	public void getPostInfo(int idx,Model model) {

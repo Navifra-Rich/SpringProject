@@ -14,7 +14,8 @@ public interface MemberService {
 	
 	public List<MemberDTO> viewAll();
 	public void insertMember(String id,String name, String pw);
-	public MemberDTO signUp(String id,String name, String pw);
+	public void signUp(String id,String name, String pw);
 	public boolean logIn(String id, String pw);
 	void mappingUserInfo(Model model, HttpServletRequest request);
+	boolean idDuplicated(String id);
 }

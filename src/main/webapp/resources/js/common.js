@@ -1,31 +1,47 @@
 /**
- * ´ëºÎºĞÀÇ ÆäÀÌÁö¿¡¼­ °øÅëÀûÀ¸·Î ÀÌ¿ëÇØ¾ß ÇÏ´Â ±â´Éµé
+ * ëŒ€ë¶€ë¶„ì˜ í˜ì´ì§€ì—ì„œ ê³µí†µì ìœ¼ë¡œ ì´ìš©í•´ì•¼ í•˜ëŠ” ê¸°ëŠ¥ë“¤
  */
 
-// Mypage Å¬¸¯
+// íšŒì›ê°€ì…
+function signUpPage(){
+	location.href="/ex/Main/signUpPage";
+}
+// Mypage í´ë¦­
 function mypageClick() {
 	location.href = "/ex/Main/myPage";
 }
-// Logout ¹öÆ° Å¬¸¯
+// Logout ë²„íŠ¼ í´ë¦­
 function logout() {
 	location.href = "/ex/Main/logOut";
 }
-//È¨ ·Î°í Å¬¸¯ (½ÃÀÛ ÆäÀÌÁö ÀÌµ¿)
+//í™ˆ ë¡œê³  í´ë¦­ (ì‹œì‘ í˜ì´ì§€ ì´ë™)
 function goHome() {
 	location.href = "/ex/";
 }
-//¾Ë¶÷ ¸®½ºÆ® Ãâ·Â
+//ì•ŒëŒ ë¦¬ìŠ¤íŠ¸ ì¶œë ¥
 function getAlarmList() {
 	var left = window.screen.width / 2 - 300;
 	var top = window.screen.height / 2 - 200;
 	window.open("/ex/Alarm/getAlarmList", "alarm",
 			"width=600, height=400, left=" + left + ", top=" + top);
 }
-//¸ğÀÓ ¸®½ºÆ® Ãâ·Â
+//ëª¨ì„ ë¦¬ìŠ¤íŠ¸ ì¶œë ¥
 function getMeetingList() {
 	var left = window.screen.width / 2 - 250;
 	var top = window.screen.height / 2 - 200;
 	window.open("/ex/Meeting/getMeetingList?userID=${userID}",
 			"meeting", "width=500, height=400, left=" + left + ", top="
 					+ top);
+}
+// ì•ŒëŒ ê¸°ëŠ¥
+function alarmSet(alarmCount) {
+	if (alarmCount!= '0'&&alarmCount==null) {
+		$('.alarm').css("background-color", "red");
+		$('.alarm').css("color", "white");
+		$('.alarm').append(alarmCount);
+		//alert(alarmCount+'ì•ŒëŒì´ ë„ì°©í–ˆìŠµë‹ˆë‹¤.');
+	}
+	else{
+		//alert('ì•ŒëŒ ì—†ìŒ');
+	}
 }

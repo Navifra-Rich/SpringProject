@@ -1,18 +1,14 @@
 package com.sp.ex;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import java.math.BigInteger;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -24,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sp.ex.dto.PagingDTO;
+import com.sp.ex.common.MainpageCommon;
 import com.sp.ex.service.BoardService;
 import com.sp.ex.service.GoogleOAuthService;
 import com.sp.ex.service.MemberService;
@@ -42,10 +38,18 @@ public class MainController {
 	@Autowired
 	private GoogleOAuthService googleService;
 
-	@RequestMapping(value = "/rrr")
-	public String redirect(@RequestParam("code") String code) {
+	@Autowired
+	private MainpageCommon mainCom;
 
-		return "member/test";
+	@RequestMapping(value = "/temp")
+	@ResponseBody
+	public String redirect(@RequestParam("msg") String msg) throws Exception {
+		System.out.println("msg = " + msg);
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.reset();
+		digest.update(msg.getBytes("UTF8"));
+		String toReturn = String.format("%064x", new BigInteger(1, digest.digest()));
+		return toReturn;
 	}
 
 	@RequestMapping(value = "/test")
@@ -53,7 +57,6 @@ public class MainController {
 		String urlStr = "https://kauth.kakao.com/oauth/authorize?client_id=f7c30b063e2ae91c50963c86dae0f309&redirect_uri=http://localhost:805/ex/Main/kakaologin&response_type=code&scope=friends";
 
 		URL url = new URL(urlStr);
-
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		int resCode = con.getResponseCode();
@@ -75,33 +78,30 @@ public class MainController {
 		return "yeyeyeyah";
 	}
 
-	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
-	public String rere(@RequestParam("code") String code) throws Exception {
-		URL url = new URL("https://kauth.kakao.com/oauth/token");
-		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-		con.setRequestMethod("POST");
-		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		con.setDoOutput(true);
-		con.setDoInput(true);
-		String param = "grant_type=authorization_code" + "&client_id=f7c30b063e2ae91c50963c86dae0f309"
-				+ "&redirect_uri=http://localhost:805/ex/Main/kakaologin" + "&code=" + code;
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(param);
-		wr.flush();
-		wr.close();
-
-		int resCode = con.getResponseCode();
-		System.out.println("response code = " + resCode);
-		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-		String line = "";
-		while ((line = br.readLine()) != null) {
-			System.out.println(line);
-		}
-
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
-		return "member/test";
-	}
+//	@RequestMapping(value = "/kakaologin", method = RequestMethod.GET)
+//	public String rere(@RequestParam("code") String code) throws Exception {
+//		URL url = new URL("https://kauth.kakao.com/oauth/token");
+//		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+//		con.setRequestMethod("POST");
+//		con.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+//		con.setDoOutput(true);
+//		con.setDoInput(true);
+//		String param = "grant_type=authorization_code" + "&client_id=f7c30b063e2ae91c50963c86dae0f309"
+//				+ "&redirect_uri=http://localhost:805/ex/Main/kakaologin" + "&code=" + code;
+//		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+//		wr.writeBytes(param);
+//		wr.flush();
+//		wr.close();
+//
+//		int resCode = con.getResponseCode();
+//		System.out.println("response code = " + resCode);
+//		BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//		String line = "";
+//		while ((line = br.readLine()) != null) {
+//			System.out.println(line);
+//		}
+//		return "member/test";
+//	}
 
 	@RequestMapping("/getCode")
 	public String test() {
@@ -125,19 +125,24 @@ public class MainController {
 
 	@RequestMapping("/logIn")
 	public String logIn(HttpServletRequest request, @RequestParam("id") String id, @RequestParam("pw") String pw,
-			Model model) {
+			Model model) throws Exception {
 		System.out.println("logIn in MainController");
-		boolean isExist = memberService.logIn(id, pw);
+		mainCom.mainPageCom(model, request);
+		
+		//SHA-256 해싱 과정 거침
+		MessageDigest digest= MessageDigest.getInstance("SHA-256");
+		digest.reset();
+		digest.update(pw.getBytes("UTF8"));
+		String toReturn = String.format("%064x", new BigInteger(1, digest.digest()));
+		
+		//실제 로그인
+		boolean isExist = memberService.logIn(id, toReturn);
 		if (isExist) {
 			System.out.println("logIn!");
-
 			HttpSession session = request.getSession();
 			session.setAttribute("userID", id);
-
-			model.addAttribute("hitContents", boardService.getHitPost());
-			boardService.setBoardPage("", model, 1);
 		}
-		return "redirect:/";
+		return "home";
 
 	}
 
@@ -148,13 +153,24 @@ public class MainController {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/signUp")
-	public String signUp(@RequestParam("id") String id, @RequestParam("name") String name,
-			@RequestParam("pw") String pw, Model model) {
+	@RequestMapping("/signUpPage")
+	public String signUpPage() {
 		System.out.println("sign up! in controller");
 
-		model.addAttribute("dtos", memberService.signUp(id, name, pw));
 		return "member/signUp";
+	}
+
+	@RequestMapping("/signUp")
+	public String signUp(@RequestParam("id") String id, @RequestParam("name") String name,
+			@RequestParam("pw") String pw, Model model) throws Exception {
+
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		digest.reset();
+		digest.update(pw.getBytes("UTF8"));
+		String toReturn = String.format("%064x", new BigInteger(1, digest.digest()));
+		if (!memberService.idDuplicated(id))
+			memberService.signUp(id, name, toReturn);
+		return "redirect:/";
 	}
 
 	@RequestMapping("/myPage")
@@ -168,4 +184,5 @@ public class MainController {
 
 		return "redirect:/" + request;
 	}
+
 }
