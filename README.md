@@ -12,7 +12,8 @@ Spring Framework의 구조를 이해하기 위해 간단한 CRUD 기능이 있�
 
 #### 2.1 Languague
 
-![JAVA]()[JSP][JAVASCRIPT][HTTP][CSS]
+![Java](/images/java.png)  
+[JSP][JAVASCRIPT][HTTP][CSS]
 
 #### 2.2 Framework & Library
 
